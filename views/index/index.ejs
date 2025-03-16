@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4">URL Shortener</h2>
+                <form action="/api/shortUrl" method="POST">
+                    <!-- Original URL -->
+                    <div class="mb-3">
+                        <label for="longUrl" class="form-label">Enter URL to Shorten</label>
+                        <input type="url" class="form-control" id="longUrl" name="url[originalUrl]" required>
+                    </div>
+                
+                    <!-- Custom Domain (Optional) -->
+                    <div class="mb-3">
+                        <label for="customDomain" class="form-label">Custom Domain (Optional)</label>
+                        <input type="text" class="form-control" id="customDomain" name="url[customDomain]">
+                    </div>
+                
+                    <!-- Expiration Date -->
+                    <div class="mb-3">
+                        <label for="expiry" class="form-label">Expiry</label>
+                        <select class="form-select" id="expiry" name="url[expirationDate]">
+                            <option value="">No Expiry</option>
+                            <option value="1d">1 Day</option>
+                            <option value="2d">2 Days</option>
+                            <option value="3d">3 Days</option>
+                            <option value="1w">1 Week</option>
+                            <option value="2w">2 Weeks</option>
+                            <option value="1m">1 Month</option>
+                        </select>
+                    </div>
+                
+                    <!-- QR Code Option -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="generateQR" name="url[generateQR]" value="true">
+                        <label class="form-check-label" for="generateQR">Generate QR Code</label>
+                    </div>
+                
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Shorten URL</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

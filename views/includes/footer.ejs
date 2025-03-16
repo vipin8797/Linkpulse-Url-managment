@@ -1,0 +1,106 @@
+<style>
+  /* General styles for the footer */
+  footer {
+    background-color: #333; /* Dark background for the footer */
+    color: #fff; /* White text color */
+    padding: 20px 0; /* Padding for top and bottom */
+    font-size: 14px; /* Font size */
+    margin-top: auto; /* Push footer to the bottom */
+  }
+
+  /* Container for footer content */
+  .footer-content {
+    display: flex;
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Vertically center align items */
+    max-width: 1200px; /* Maximum width of the footer */
+    margin: 0 auto; /* Center the footer horizontally */
+    padding: 0 20px; /* Padding on the sides */
+  }
+
+  /* Left section of the footer */
+  .footer-left {
+    display: flex;
+    gap: 10px; /* Space between items */
+    align-items: center; /* Vertically center align items */
+  }
+
+  /* Right section of the footer */
+  .footer-right {
+    display: flex;
+    gap: 20px; /* Space between items */
+    align-items: center; /* Vertically center align items */
+  }
+
+  /* Social icons styling */
+  .social-icons {
+    display: flex;
+    gap: 10px; /* Space between icons */
+  }
+
+  .social-icons a {
+    color: #fff; /* White color for icons */
+    font-size: 18px; /* Icon size */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  .social-icons a:hover {
+    color: #0073e6; /* Change color on hover */
+  }
+
+  /* Links styling */
+  footer a {
+    color: #fff; /* White color for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+
+  footer a:hover {
+    color: #0073e6; /* Change color on hover */
+  }
+
+  /* Ensure the footer sticks to the bottom of the page */
+  html,
+  body {
+    height: 100%; /* Full height for the HTML and body */
+    margin: 0; /* Remove default margin */
+  }
+
+  body {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+  }
+
+  main {
+    flex: 1; /* Allow main content to grow and push footer down */
+  }
+</style>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-left">
+      <span>© 2025 Url-Shortner, Inc.</span>
+      <span>·</span>
+      <span>Privacy</span>
+      <span>·</span>
+      <span>Terms</span>
+      <span>·</span>
+      <span>Sitemap</span>
+    </div>
+    <div class="footer-right">
+      <a href="#">English (AU)</a>
+      <span>$ AUD</span>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/"
+          ><i class="fa-brands fa-instagram"></i
+        ></a>
+        <a href="https://www.twiiter.com/"
+          ><i class="fa-brands fa-twitter"></i
+        ></a>
+        <a href="https://www.facebook.com/"
+          ><i class="fa-brands fa-facebook"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</footer>

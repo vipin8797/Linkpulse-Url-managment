@@ -1,0 +1,197 @@
+<!-- <% layout("/layouts/boilerplate") %> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .analytics-box {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .analytics-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .analytics-item strong {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .analytics-item span {
+            font-weight: 400;
+            color: #555;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            list-style-type: none;
+        }
+
+        /* Styling for the chart */
+        .chart-container {
+            width: 80%;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Analytics Data</h1>
+
+    <h2>General Information</h2>
+
+    <!-- Analytics Data Displayed in Boxes -->
+    <div class="analytics-box">
+        <div class="analytics-item">
+            <strong>Short URL ID:</strong>
+            <span><%= analyticsData.shortUrlId %></span>
+        </div>
+
+        <div class="analytics-item">
+            <strong>Total Clicks:</strong>
+            <span><%= analyticsData.totalClicks %></span>
+        </div>
+
+        <div class="analytics-item">
+            <strong>Unique Visitors:</strong>
+            <span><%= analyticsData.uniqueVisitors %></span>
+        </div>
+
+        <div class="analytics-item">
+            <strong>Conversion Rate:</strong>
+            <span><%= analyticsData.conversionRate %></span>
+        </div>
+
+        <div class="analytics-item">
+            <strong>Average Time on Page:</strong>
+            <span><%= analyticsData.avgTimeOnPage %></span>
+        </div>
+
+        <div class="analytics-item">
+            <strong>Bounce Rate:</strong>
+            <span><%= analyticsData.bounceRate %></span>
+        </div>
+    </div>
+
+    <h2>IP Addresses</h2>
+    <ul>
+        <% analyticsData.ipAddresses.forEach(function(ip) { %>
+            <li><%= ip %></li>
+        <% }); %>
+    </ul>
+
+    <h2>Referrers</h2>
+    <ul>
+        <% analyticsData.referrers.forEach(function(referrer) { %>
+            <li><%= referrer %></li>
+        <% }); %>
+    </ul>
+
+    <h2>User Agents</h2>
+    <ul>
+        <% analyticsData.userAgents.forEach(function(userAgent) { %>
+            <li>
+                <strong>Browser:</strong> <%= userAgent.browser %> | 
+                <strong>Device:</strong> <%= userAgent.device %> | 
+                <strong>OS:</strong> <%= userAgent.os %>
+            </li>
+        <% }); %>
+    </ul>
+
+    <h2>Location Data</h2>
+    <ul>
+        <% analyticsData.locationData.forEach(function(location) { %>
+            <li>
+                <strong>Country:</strong> <%= location.country %> | 
+                <strong>City:</strong> <%= location.city %> | 
+                <strong>Region:</strong> <%= location.region %> | 
+                <strong>Coordinates:</strong> (<%= location.lat %>, <%= location.lon %>)
+            </li>
+        <% }); %>
+    </ul>
+
+    <h2>Date</h2>
+    <p><%= new Date(analyticsData.date).toLocaleString() %></p>
+
+    <!-- New Section for Referrer Graph -->
+    <h2>Referrer Data</h2>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+       
+    <script>
+      const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+const data = {
+  labels: [
+    'Red',
+    'Blue',
+    'Yellow'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [300, 50, 100],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+    </script>
+</body>
+</html>
