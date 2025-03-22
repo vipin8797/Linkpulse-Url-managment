@@ -1,0 +1,234 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-4">
+  <h1 class="text-center mb-3 fw-bold text-dark">Short URL Created Successfully!</h1>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 rounded-3 p-4 bg-light">
+        <div class="row g-3 align-items-center">
+          <!-- Short URL and Original URL -->
+          <div class="col-md-4 text-center">
+            <h5 class="fw-semibold text-dark mb-3">Your Links</h5>
+            <div class="link-box p-3 bg-white rounded shadow-sm">
+              <div class="mb-2">
+                <label class="fw-medium text-muted small d-block">Short URL</label>
+                <a href="<%= newShortUrl.shortUrl %>" target="_blank" class="short-url text-primary fw-bold d-block"><%= newShortUrl.shortUrl %></a>
+              </div>
+              <div class="mb-2">
+                <label class="fw-medium text-muted small d-block">Original URL</label>
+                <a href="<%= newShortUrl.originalUrl %>" target="_blank" class="original-url text-secondary text-truncate d-block"><%= newShortUrl.originalUrl %></a>
+              </div>
+              <button onclick="copyShortUrl()" class="btn btn-outline-success btn-sm w-100 mt-2">Copy Short URL</button>
+            </div>
+          </div>
+
+          <!-- QR Code -->
+          <div class="col-md-4 text-center">
+            <h5 class="fw-semibold text-dark mb-3">QR Code</h5>
+            <div class="qr-box">
+              <% if (newShortUrl.qrCode && newShortUrl.qrCode.startsWith('data:image')) { %>
+                <!-- Base64 Data URL Case -->
+                <img src="<%= newShortUrl.qrCode %>" alt="QR Code" class="qr-image">
+              <% } else if (newShortUrl.qrCode) { %>
+                <!-- File Path Case -->
+                <img src="/uploads/<%= path.basename(newShortUrl.qrCode) %>" alt="QR Code" class="qr-image">
+              <% } else { %>
+                <!-- Default QR Code if null/undefined -->
+                <img src="/uploads/default_qr.png" alt="Default QR Code" class="qr-image">
+              <% } %>
+            </div>
+            <button onclick="downloadQR()" class="btn btn-outline-primary btn-sm mt-2">Download</button>
+          </div>
+
+          <!-- Link Details -->
+          <div class="col-md-4">
+            <div class="info-box p-3 bg-white rounded shadow-sm">
+              <h5 class="fw-medium mb-2">Details</h5>
+              <p class="small mb-1">
+                <strong>Created:</strong>
+                <% if (newShortUrl.createdAt && newShortUrl.createdAt.$date && newShortUrl.createdAt.$date.$numberLong) { %>
+                  <%= new Date(parseInt(newShortUrl.createdAt.$date.$numberLong)).toLocaleString() %>
+                <% } else if (newShortUrl.createdAt) { %>
+                  <%= new Date(newShortUrl.createdAt).toLocaleString() %>
+                <% } else { %>
+                  Not available
+                <% } %>
+              </p>
+              <p class="small mb-0">
+                <strong>Expires:</strong>
+                <% if (newShortUrl.expirationDate && newShortUrl.expirationDate.$date && newShortUrl.expirationDate.$date.$numberLong) { %>
+                  <%= new Date(parseInt(newShortUrl.expirationDate.$date.$numberLong)).toLocaleString() %>
+                <% } else if (newShortUrl.expirationDate) { %>
+                  <%= new Date(newShortUrl.expirationDate).toLocaleString() %>
+                <% } else { %>
+                  Not available
+                <% } %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons with Updated Routes -->
+        <div class="mt-4">
+          <div class="row g-2 justify-content-center">
+            <div class="col-md-3 col-6">
+              <a href="/api/yourLinks/<%= newShortUrl._id %>" class="btn btn-primary w-100 py-2">Edit Link</a>
+            </div>
+            <div class="col-md-3 col-6">
+              <a href="/api/yourLinks/<%= newShortUrl._id %>/qrCode" class="btn btn-primary w-100 py-2">Edit QR</a>
+            </div>
+            <div class="col-md-3 col-6">
+              <a href="/api/summaryAnalytics/<%= newShortUrl._id %>" class="btn btn-secondary w-100 py-2">Full Analytics</a>
+            </div>
+            <div class="col-md-3 col-6">
+              <a href="/api/analytics/<%= newShortUrl._id %>" class="btn btn-secondary w-100 py-2">Link Analytics</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+  .card {
+    background-color: #f8f9fa;
+  }
+  .link-box {
+    border: 1px solid #e9ecef;
+    transition: box-shadow 0.3s;
+  }
+  .link-box:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .short-url {
+    font-size: 1.2rem;
+    color: #007bff;
+    text-decoration: none;
+    word-break: break-all;
+    transition: color 0.3s;
+  }
+  .short-url:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  .original-url {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-decoration: none;
+    max-width: 100%;
+    transition: color 0.3s;
+  }
+  .original-url:hover {
+    color: #495057;
+    text-decoration: underline;
+  }
+  .qr-box {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+  }
+  .qr-box:hover {
+    transform: scale(1.05);
+  }
+  .qr-image {
+    max-width: 100%;
+    border-radius: 5px;
+  }
+  .info-box {
+    border: 1px solid #e9ecef;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  .btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+    font-size: 0.9rem;
+  }
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  .btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+    font-size: 0.9rem;
+  }
+  .btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+  }
+  .small {
+    font-size: 0.85rem;
+  }
+  @media (max-width: 768px) {
+    .short-url {
+      font-size: 1rem;
+    }
+    .original-url {
+      font-size: 0.8rem;
+    }
+    .qr-box {
+      width: 120px;
+      height: 120px;
+    }
+    .btn {
+      font-size: 0.8rem;
+      padding: 0.5rem;
+    }
+  }
+</style>
+
+<!-- Scripts -->
+<script>
+  function downloadQR() {
+    const qrImage = "<%= newShortUrl.qrCode && newShortUrl.qrCode.startsWith('data:image') ? newShortUrl.qrCode : '/uploads/' + (newShortUrl.qrCode ? path.basename(newShortUrl.qrCode) : 'default_qr.png') %>";
+    const a = document.createElement("a");
+    a.href = qrImage;
+    a.download = "qr_code.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function copyShortUrl() {
+    const shortUrl = "<%= newShortUrl.shortUrl %>";
+    navigator.clipboard.writeText(shortUrl).then(() => {
+      const copyBtn = document.querySelector(".btn-outline-success");
+      copyBtn.textContent = "Copied!";
+      copyBtn.classList.remove("btn-outline-success");
+      copyBtn.classList.add("btn-success");
+      setTimeout(() => {
+        copyBtn.textContent = "Copy Short URL";
+        copyBtn.classList.remove("btn-success");
+        copyBtn.classList.add("btn-outline-success");
+      }, 2000);
+    }).catch(err => {
+      console.error("Failed to copy: ", err);
+      alert("Failed to copy URL!");
+    });
+  }
+</script>

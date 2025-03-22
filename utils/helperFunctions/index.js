@@ -1,4 +1,7 @@
 const generateUniqueShortUrl = require('./randUrlGenerator');
-const generateQRCode = require('./qrCodeGen');
+const generateAndGetQRCodePath = require('./qrCodeGen');
+const updateUserSummary = require('./updateSummary');
 
-module.exports = { generateUniqueShortUrl, generateQRCode };
+
+module.exports = { generateUniqueShortUrl, generateAndGetQRCodePath,updateUserSummary };
+
