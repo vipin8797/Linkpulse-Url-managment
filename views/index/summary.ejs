@@ -1,0 +1,334 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* Full screen wrapper with enhanced styling */
+  .summary-wrapper {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #2c3e50;
+    line-height: 1.6;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .summary-wrapper .sum-container {
+    max-width: 1600px;
+    width: 100%;
+    margin: 60px auto 40px auto;
+    padding: 0 20px;
+    flex-grow: 1;
+  }
+
+  .summary-wrapper .sum-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1a2b3c;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .summary-wrapper .sum-subtitle {
+    font-size: 1.2rem;
+    color: #5a6b7c;
+    text-align: center;
+    margin-bottom: 40px;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+  }
+
+  .summary-wrapper .sum-card {
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    transition: all 0.3s ease;
+    border: none;
+    overflow: hidden;
+    margin-bottom: 25px;
+  }
+
+  .summary-wrapper .sum-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  .summary-wrapper .sum-card-body {
+    padding: 25px;
+  }
+
+  .summary-wrapper .sum-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a2b3c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+
+  .summary-wrapper .sum-card-title:hover {
+    color: #007bff;
+  }
+
+  .summary-wrapper .sum-display-stats {
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: #007bff;
+    background: rgba(0, 123, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .summary-wrapper canvas {
+    max-height: 350px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+  }
+
+  .summary-wrapper .sum-table-compact {
+    font-size: 0.95rem;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .summary-wrapper .sum-table-compact th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+  }
+
+  .summary-wrapper .sum-table-compact td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .summary-wrapper .sum-section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .summary-wrapper .sum-section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a2b3c;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
+  }
+
+  .summary-wrapper .sum-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+
+  @media (max-width: 768px) {
+    .summary-wrapper .sum-display-stats {
+      font-size: 2rem;
+    }
+    .summary-wrapper .sum-card-body {
+      padding: 20px;
+    }
+    .summary-wrapper .sum-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<div class="summary-wrapper">
+  <div class="sum-container">
+    <h1 class="sum-title">User Analytics Summary</h1>
+    <p class="sum-subtitle">
+      For User: <%= currentUser ? currentUser.username : 'Unknown' %> | 
+      Last Updated: <%= new Date(summaryData.lastUpdated).toLocaleString() %> | 
+      Total URLs: <%= summaryData.totalShortUrls %>
+    </p>
+
+    <!-- Basic Stats -->
+    <div class="sum-section">
+      <h2 class="sum-section-title"><i class="fas fa-chart-bar sum-icon"></i> Basic Statistics</h2>
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-link sum-icon"></i> Total URLs</h5>
+              <p class="sum-display-stats"><%= summaryData.totalShortUrls %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-mouse-pointer sum-icon"></i> Total Clicks</h5>
+              <p class="sum-display-stats"><%= summaryData.totalClicks %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-users sum-icon"></i> Unique Visitors</h5>
+              <p class="sum-display-stats"><%= summaryData.totalUniqueVisitors %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-chart-line sum-icon"></i> Avg. Conversion</h5>
+              <p class="sum-display-stats"><%= summaryData.avgConversionRate.toFixed(2) %>%</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-clock sum-icon"></i> Avg. Time on Page</h5>
+              <p class="sum-display-stats"><%= summaryData.avgTimeOnPage.toFixed(1) %>s</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title"><i class="fas fa-sign-out-alt sum-icon"></i> Avg. Bounce Rate</h5>
+              <p class="sum-display-stats"><%= summaryData.avgBounceRate.toFixed(2) %>%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Agents Section -->
+    <div class="sum-section">
+      <h2 class="sum-section-title"><i class="fas fa-desktop sum-icon"></i> User Agents Insights</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Browsers</h5>
+              <canvas id="sumBrowsersChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Devices</h5>
+              <canvas id="sumDevicesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Operating Systems</h5>
+              <canvas id="sumOsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Section -->
+    <div class="sum-section">
+      <h2 class="sum-section-title"><i class="fas fa-globe sum-icon"></i> Location Insights</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Top Countries</h5>
+              <canvas id="sumCountriesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Top Cities</h5>
+              <canvas id="sumCitiesChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Traffic Sources and IPs Section -->
+    <div class="sum-section">
+      <h2 class="sum-section-title"><i class="fas fa-traffic-light sum-icon"></i> Traffic Sources & IPs</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Traffic Sources</h5>
+              <canvas id="sumReferrersChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="sum-card">
+            <div class="sum-card-body">
+              <h5 class="sum-card-title">Top IP Addresses</h5>
+              <table class="sum-table-compact">
+                <thead><tr><th>IP</th><th>Visits</th></tr></thead>
+                <tbody><% summaryData.ipSummary.slice(0, 5).forEach(ip => { %><tr><td><%= ip.ip %></td><td><%= ip.count %></td></tr><% }) %></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const summaryData = <%- JSON.stringify(summaryData) %>;
+
+    // Chart Creation Helper
+    function createChart(id, type, labels, data, colors) {
+      new Chart(document.getElementById(id), {
+        type,
+        data: {
+          labels: labels.length ? labels : ['No Data'],
+          datasets: [{ data: labels.length ? data : [1], backgroundColor: colors }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' } },
+          ...(type === 'bar' ? { scales: { y: { beginAtZero: true } } } : {})
+        }
+      });
+    }
+
+    // Charts
+    createChart('sumBrowsersChart', 'pie', summaryData.userAgentsSummary.browsers.map(b => b.name), summaryData.userAgentsSummary.browsers.map(b => b.count), ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']);
+    createChart('sumDevicesChart', 'pie', summaryData.userAgentsSummary.devices.map(d => d.name), summaryData.userAgentsSummary.devices.map(d => d.count), ['#FF6384', '#36A2EB', '#FFCE56']);
+    createChart('sumOsChart', 'pie', summaryData.userAgentsSummary.os.map(o => o.name), summaryData.userAgentsSummary.os.map(o => o.count), ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']);
+    createChart('sumCountriesChart', 'bar', summaryData.locationSummary.countries.slice(0, 5).map(c => c.name), summaryData.locationSummary.countries.slice(0, 5).map(c => c.count), ['#36A2EB']);
+    createChart('sumCitiesChart', 'bar', summaryData.locationSummary.cities.slice(0, 5).map(c => c.name), summaryData.locationSummary.cities.slice(0, 5).map(c => c.count), ['#4BC0C0']);
+    createChart('sumReferrersChart', 'pie', summaryData.referrersSummary.slice(0, 5).map(r => r.name), summaryData.referrersSummary.slice(0, 5).map(r => r.count), ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']);
+  </script>
+</div>

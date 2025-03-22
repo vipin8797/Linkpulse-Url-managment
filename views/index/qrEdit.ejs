@@ -1,0 +1,319 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <h1 class="text-center mb-4 fw-bold text-dark">Customize Your QR Code</h1>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 rounded-3 p-4">
+        <h2 class="card-title mb-3 fw-semibold text-dark">QR Code Editor</h2>
+        
+        <form id="qrForm" action="/api/yourLinks/<%= shortedUrl._id %>/qr?_method=PUT" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="data" value="<%= shortedUrl.shortUrl %>">
+
+          <!-- QR Code Previews -->
+          <div class="row mb-4">
+            <div class="col-md-6 text-center">
+              <% if (shortedUrl.qrCode) { %>
+                <label class="fw-medium text-muted">Current QR Code</label>
+                <div class="qr-current-box">
+                  <img src="/uploads/<%= path.basename(shortedUrl.qrCode) %>" alt="Current QR Code" class="qr-image">
+                </div>
+              <% } %>
+            </div>
+            <div class="col-md-6 text-center">
+              <label class="fw-medium text-muted">Live Preview</label>
+              <div id="qrPreview" class="qr-preview-box"></div>
+            </div>
+          </div>
+
+          <!-- Basic QR Options -->
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="qrSize" class="fw-medium">Size (px)</label>
+                <input type="number" id="qrSize" name="size" min="100" max="500" value="150" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="bgColor" class="fw-medium">Background Color</label>
+                <input type="color" id="bgColor" name="bgColor" value="#ffffff" class="form-control-color">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="dotsType" class="fw-medium">Dots Style</label>
+                <select id="dotsType" name="dotsType" class="form-control">
+                  <option value="square" selected>Square</option>
+                  <option value="dots">Dots</option>
+                  <option value="rounded">Rounded</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advanced Options -->
+          <details class="mt-3">
+            <summary class="fw-medium text-primary">Advanced Options</summary>
+            <div class="advanced-options p-3 bg-light rounded">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="margin" class="fw-medium">Margin (px)</label>
+                    <input type="number" id="qrMargin" name="margin" min="0" max="50" value="10" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="dotsColor1" class="fw-medium">Dots Color 1</label>
+                    <input type="color" id="dotsColor1" name="dotsColor1" value="#ff0000" class="form-control-color">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="dotsColor2" class="fw-medium">Dots Color 2</label>
+                    <input type="color" id="dotsColor2" name="dotsColor2" value="#0000ff" class="form-control-color">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cornerSquareType" class="fw-medium">Corner Square</label>
+                    <select id="cornerSquareType" name="cornerSquareType" class="form-control">
+                      <option value="square">Square</option>
+                      <option value="extra-rounded" selected>Extra Rounded</option>
+                      <option value="dot">Dot</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cornerSquareColor" class="fw-medium">Square Color</label>
+                    <input type="color" id="cornerSquareColor" name="cornerSquareColor" value="#ff6600" class="form-control-color">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cornerDotType" class="fw-medium">Corner Dot</label>
+                    <select id="cornerDotType" name="cornerDotType" class="form-control">
+                      <option value="dot" selected>Dot</option>
+                      <option value="square">Square</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cornerDotColor" class="fw-medium">Dot Color</label>
+                    <input type="color" id="cornerDotColor" name="cornerDotColor" value="#ff3300" class="form-control-color">
+                  </div>
+                </div>
+                <!-- Uncomment if logo is needed -->
+                <!-- <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="logoImage" class="fw-medium">Logo</label>
+                    <input type="file" id="logoImage" name="logoImage" accept="image/*" class="form-control">
+                  </div>
+                </div> -->
+                <div class="col-md-4">
+                  <!-- <div class="form-group">
+                    <label for="logoSize" class="fw-medium">Logo Size (0.1-1)</label>
+                    <input type="number" id="logoSize" name="logoSize" min="0.1" max="1" step="0.1" value="0.4" class="form-control">
+                  </div> -->
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="errorCorrection" class="fw-medium">Error Correction</label>
+                    <select id="errorCorrection" name="errorCorrection" class="form-control">
+                      <option value="L">Low</option>
+                      <option value="M">Medium</option>
+                      <option value="Q">Quartile</option>
+                      <option value="H" selected>High</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Submit Button -->
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5 py-2 fw-medium">Save QR Code</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+  .qr-current-box {
+    width: 180px;
+    height: 180px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .qr-image {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .qr-preview-box {
+    width: 180px;
+    height: 180px;
+    margin: 10px auto;
+    border: 2px dashed #007bff;
+    background-color: #fff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: border-color 0.3s;
+  }
+  .qr-preview-box:hover {
+    border-color: #0056b3;
+  }
+  .form-group {
+    margin-bottom: 12px;
+  }
+  .form-control {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  .form-control-color {
+    width: 80px;
+    height: 35px;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .advanced-options {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+  details summary {
+    cursor: pointer;
+    padding: 8px;
+    color: #007bff;
+    font-size: 14px;
+  }
+  details[open] summary {
+    border-bottom: 1px solid #ddd;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<!-- Scripts for Live QR Code Updating -->
+<script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+<script>
+  let qrCode = new QRCodeStyling({
+    width: 150,
+    height: 150,
+    data: "<%= shortedUrl.shortUrl %>",
+    margin: 10,
+    backgroundOptions: { color: "#ffffff" },
+    dotsOptions: { type: "square", color: "#000000" },
+    cornersSquareOptions: { type: "extra-rounded", color: "#ff6600" },
+    cornersDotOptions: { type: "dot", color: "#ff3300" },
+    imageOptions: { crossOrigin: "anonymous", margin: 10, imageSize: 0.4, hideBackgroundDots: true },
+    qrOptions: { errorCorrectionLevel: "H" }
+  });
+  qrCode.append(document.getElementById("qrPreview"));
+
+  async function updatePreview() {
+    const formData = new FormData(document.getElementById("qrForm"));
+    const config = {
+      width: parseInt(formData.get("size")) || 150,
+      height: parseInt(formData.get("size")) || 150,
+      data: formData.get("data"),
+      margin: parseInt(formData.get("margin")) || 10,
+      backgroundOptions: { color: formData.get("bgColor") || "#ffffff" },
+      dotsOptions: {
+        type: formData.get("dotsType") || "square",
+        gradient: formData.get("dotsColor1") && formData.get("dotsColor2") ? {
+          type: "linear",
+          colorStops: [
+            { offset: 0, color: formData.get("dotsColor1") },
+            { offset: 1, color: formData.get("dotsColor2") }
+          ]
+        } : { color: "#000000" }
+      },
+      cornersSquareOptions: {
+        type: formData.get("cornerSquareType") || "extra-rounded",
+        color: formData.get("cornerSquareColor") || "#ff6600"
+      },
+      cornersDotOptions: {
+        type: formData.get("cornerDotType") || "dot",
+        color: formData.get("cornerDotColor") || "#ff3300"
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 10,
+        imageSize: parseFloat(formData.get("logoSize")) || 0.4,
+        hideBackgroundDots: true
+      },
+      qrOptions: { errorCorrectionLevel: formData.get("errorCorrection") || "H" }
+    };
+
+    const logoImage = document.getElementById("logoImage")?.files[0];
+    if (logoImage) {
+      const logoUrl = URL.createObjectURL(logoImage);
+      await new Promise((resolve) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = () => console.error("Logo load failed");
+        img.src = logoUrl;
+      });
+      config.image = logoUrl;
+    } else {
+      delete config.image;
+    }
+
+    qrCode = new QRCodeStyling(config);
+    document.getElementById("qrPreview").innerHTML = "";
+    qrCode.append(document.getElementById("qrPreview"));
+  }
+
+  document.querySelectorAll("#qrForm input, #qrForm select").forEach(element => {
+    element.addEventListener("input", updatePreview);
+    element.addEventListener("change", updatePreview);
+  });
+
+  document.getElementById("qrForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await updatePreview();
+    const formData = new FormData(e.target);
+    const qrBlob = await qrCode.getRawData("png");
+    if (!qrBlob) {
+      console.error("Failed to generate QR blob");
+      return;
+    }
+    formData.append("qrImage", qrBlob, `qr_${"<%= shortedUrl._id %>"}.png`);
+
+    fetch(`/api/yourLinks/<%= shortedUrl._id %>/qr?_method=PUT`, {
+      method: "POST",
+      body: formData
+    }).then(response => {
+      if (response.ok) {
+        window.location.href = `/api/yourLinks/<%= shortedUrl._id %>?t=${Date.now()}`;
+      } else {
+        console.error("Error saving QR code");
+      }
+    }).catch(error => console.error("Fetch error:", error));
+  });
+
+  updatePreview();
+</script>

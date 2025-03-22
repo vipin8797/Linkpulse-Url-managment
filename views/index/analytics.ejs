@@ -1,197 +1,318 @@
-<!-- <% layout("/layouts/boilerplate") %> -->
+<% layout("/layouts/boilerplate") %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Data</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .analytics-box {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            margin: 20px auto;
-        }
-
-        .analytics-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .analytics-item strong {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .analytics-item span {
-            font-weight: 400;
-            color: #555;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-
-        ul li {
-            list-style-type: none;
-        }
-
-        /* Styling for the chart */
-        .chart-container {
-            width: 80%;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body>
-    <h1>Analytics Data</h1>
-
-    <h2>General Information</h2>
-
-    <!-- Analytics Data Displayed in Boxes -->
-    <div class="analytics-box">
-        <div class="analytics-item">
-            <strong>Short URL ID:</strong>
-            <span><%= analyticsData.shortUrlId %></span>
-        </div>
-
-        <div class="analytics-item">
-            <strong>Total Clicks:</strong>
-            <span><%= analyticsData.totalClicks %></span>
-        </div>
-
-        <div class="analytics-item">
-            <strong>Unique Visitors:</strong>
-            <span><%= analyticsData.uniqueVisitors %></span>
-        </div>
-
-        <div class="analytics-item">
-            <strong>Conversion Rate:</strong>
-            <span><%= analyticsData.conversionRate %></span>
-        </div>
-
-        <div class="analytics-item">
-            <strong>Average Time on Page:</strong>
-            <span><%= analyticsData.avgTimeOnPage %></span>
-        </div>
-
-        <div class="analytics-item">
-            <strong>Bounce Rate:</strong>
-            <span><%= analyticsData.bounceRate %></span>
-        </div>
-    </div>
-
-    <h2>IP Addresses</h2>
-    <ul>
-        <% analyticsData.ipAddresses.forEach(function(ip) { %>
-            <li><%= ip %></li>
-        <% }); %>
-    </ul>
-
-    <h2>Referrers</h2>
-    <ul>
-        <% analyticsData.referrers.forEach(function(referrer) { %>
-            <li><%= referrer %></li>
-        <% }); %>
-    </ul>
-
-    <h2>User Agents</h2>
-    <ul>
-        <% analyticsData.userAgents.forEach(function(userAgent) { %>
-            <li>
-                <strong>Browser:</strong> <%= userAgent.browser %> | 
-                <strong>Device:</strong> <%= userAgent.device %> | 
-                <strong>OS:</strong> <%= userAgent.os %>
-            </li>
-        <% }); %>
-    </ul>
-
-    <h2>Location Data</h2>
-    <ul>
-        <% analyticsData.locationData.forEach(function(location) { %>
-            <li>
-                <strong>Country:</strong> <%= location.country %> | 
-                <strong>City:</strong> <%= location.city %> | 
-                <strong>Region:</strong> <%= location.region %> | 
-                <strong>Coordinates:</strong> (<%= location.lat %>, <%= location.lon %>)
-            </li>
-        <% }); %>
-    </ul>
-
-    <h2>Date</h2>
-    <p><%= new Date(analyticsData.date).toLocaleString() %></p>
-
-    <!-- New Section for Referrer Graph -->
-    <h2>Referrer Data</h2>
-    <div>
-        <canvas id="myChart"></canvas>
-      </div>
-       
-    <script>
-      const ctx = document.getElementById('myChart');
-
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
+<style>
+  /* Your existing styles remain unchanged */
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 1400px;
+    /* margin-top: 40px; */
+    padding: 0 15px;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  }
+  .card-body {
+    padding: 20px;
+  }
+  .card h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  .display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #007bff;
+  }
+  canvas {
+    max-height: 300px;
+  }
+  .stats-row {
+    gap: 20px 0;
+  }
+  .table-sm {
+    font-size: 0.9rem;
+  }
+  @media (max-width: 768px) {
+    .display-4 {
+      font-size: 1.8rem;
+    }
+    .card-body {
+      padding: 15px;
     }
   }
-});
+</style>
 
-const data = {
-  labels: [
-    'Red',
-    'Blue',
-    'Yellow'
-  ],
-  datasets: [{
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
-    ],
-    hoverOffset: 4
-  }]
-};
-    </script>
+<body>
+  <div class="container mt-5">
+    <h1>Analytics Dashboard</h1>
+    <p class="subtitle">
+      Tracking for: <%= shortUrl ? shortUrl.shortUrl : 'Unknown URL' %> | 
+      Since: <%= new Date(analyticsData.date).toLocaleDateString() %>
+    </p>
+  </div>
+   
+
+
+    <!-- Basic Stats -->
+    <div class="row stats-row mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Total Clicks</h5>
+            <p class="display-4"><%= analyticsData.totalClicks || 0 %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Unique Visitors</h5>
+            <p class="display-4"><%= analyticsData.uniqueVisitors || 0 %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Avg. Time on Page</h5>
+            <p class="display-4"><%= (analyticsData.avgTimeOnPage || 0).toFixed(1) %>s</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Bounce Rate</h5>
+            <p class="display-4"><%= (analyticsData.bounceRate || 0).toFixed(2) %>%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts and Additional Info -->
+    <div class="row">
+      <!-- User Agents Pie Chart -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Browser Distribution</h5>
+            <canvas id="userAgentsChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Device Pie Chart -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Device Distribution</h5>
+            <canvas id="deviceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Locations Bar Chart -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Visitor Locations (Country)</h5>
+            <canvas id="locationsChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Referrers Pie Chart -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Traffic Sources</h5>
+            <canvas id="referrersChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Cities Bar Chart -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Top Cities</h5>
+            <canvas id="citiesChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top IPs Table -->
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Top IP Addresses</h5>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>Visits</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                  const ipCounts = {};
+                  analyticsData.ipAddresses.forEach(ip => {
+                    ipCounts[ip] = (ipCounts[ip] || 0) + 1;
+                  });
+                  const topIps = Object.entries(ipCounts)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+                  topIps.forEach(([ip, count]) => { %>
+                    <tr>
+                      <td><%= ip %></td>
+                      <td><%= count %></td>
+                    </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js Script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // User Agents Chart (Browser)
+    const userAgentsData = <%- JSON.stringify(analyticsData.userAgents || []) %>;
+    const browserCounts = {};
+    userAgentsData.forEach(agent => {
+      browserCounts[agent.browser] = (browserCounts[agent.browser] || 0) + 1;
+    });
+    new Chart(document.getElementById('userAgentsChart'), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(browserCounts).length ? Object.keys(browserCounts) : ['No Data'],
+        datasets: [{
+          data: Object.keys(browserCounts).length ? Object.values(browserCounts) : [1],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+        }],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+      },
+    });
+
+    // Device Chart
+    const deviceCounts = {};
+    userAgentsData.forEach(agent => {
+      deviceCounts[agent.device] = (deviceCounts[agent.device] || 0) + 1;
+    });
+    new Chart(document.getElementById('deviceChart'), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(deviceCounts).length ? Object.keys(deviceCounts) : ['No Data'],
+        datasets: [{
+          data: Object.keys(deviceCounts).length ? Object.values(deviceCounts) : [1],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        }],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+      },
+    });
+
+    // Locations Chart (Country)
+    const locationData = <%- JSON.stringify(analyticsData.locationData || []) %>;
+    const countryCounts = {};
+    locationData.forEach(loc => {
+      countryCounts[loc.country] = (countryCounts[loc.country] || 0) + 1;
+    });
+    new Chart(document.getElementById('locationsChart'), {
+      type: 'bar',
+      data: {
+        labels: Object.keys(countryCounts).length ? Object.keys(countryCounts) : ['No Data'],
+        datasets: [{
+          label: 'Visitors by Country',
+          data: Object.keys(countryCounts).length ? Object.values(countryCounts) : [0],
+          backgroundColor: '#36A2EB',
+        }],
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } },
+      },
+    });
+
+    // Top Cities Chart
+    const cityCounts = {};
+    locationData.forEach(loc => {
+      cityCounts[loc.city] = (cityCounts[loc.city] || 0) + 1;
+    });
+    const topCities = Object.entries(cityCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    new Chart(document.getElementById('citiesChart'), {
+      type: 'bar',
+      data: {
+        labels: topCities.length ? topCities.map(c => c[0]) : ['No Data'],
+        datasets: [{
+          label: 'Top 5 Cities',
+          data: topCities.length ? topCities.map(c => c[1]) : [0],
+          backgroundColor: '#4BC0C0',
+        }],
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } },
+      },
+    });
+
+    // Referrers Chart
+    const referrersData = <%- JSON.stringify(analyticsData.referrers || []) %>;
+    const referrerCounts = {};
+    referrersData.forEach(ref => {
+      referrerCounts[ref] = (referrerCounts[ref] || 0) + 1;
+    });
+    new Chart(document.getElementById('referrersChart'), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(referrerCounts).length ? Object.keys(referrerCounts) : ['No Data'],
+        datasets: [{
+          data: Object.keys(referrerCounts).length ? Object.values(referrerCounts) : [1],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+        }],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+      },
+    });
+  </script>
 </body>
-</html>

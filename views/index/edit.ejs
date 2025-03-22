@@ -1,0 +1,176 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container my-5">
+  <h1 class="text-center mb-5 fw-bold text-dark">Edit Short URL and QR Code</h1>
+  <div class="row justify-content-center">
+    <!-- URL Edit Form -->
+    <div class="col-lg-8 col-md-10 mb-4">
+      <div class="card shadow-sm border-0 rounded-3 p-4">
+        <h3 class="card-title mb-4 fw-semibold text-dark">Edit URL Details</h3>
+        <form action="/api/yourLinks/<%= shortedUrl._id %>?_method=PUT" method="POST">
+          <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+              <!-- Original URL -->
+              <div class="mb-4">
+                <label for="originalUrl" class="form-label fw-medium">Original URL</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  id="originalUrl" 
+                  name="url[originalUrl]" 
+                  value="<%= shortedUrl.originalUrl %>" 
+                  required 
+                  placeholder="https://example.com"
+                >
+              </div>
+
+              <!-- Current Domain (Read-only) -->
+              <div class="mb-4">
+                <label for="currentDomain" class="form-label fw-medium">Current Short URL</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="currentDomain" 
+                  value="<%= shortedUrl.shortUrl %>" 
+                  disabled
+                >
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+              <!-- New Custom Domain -->
+              <div class="mb-4">
+                <label for="customDomain" class="form-label fw-medium">New Custom Domain <span class="text-muted small">(Optional)</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="customDomain" 
+                  name="url[customDomain]" 
+                  placeholder="e.g., mydomain.com"
+                >
+              </div>
+
+              <!-- Expiration Dropdown -->
+              <div class="mb-4">
+                <label for="expiry" class="form-label fw-medium">Expiry Options</label>
+                <select class="form-select" id="expiry" name="url[expirationDate]" <%= user ? "" : "disabled" %>>
+                  <% if (user && user.isLoggedIn) { %>
+                    <option value="">No Expiry</option>
+                    <option value="1d">1 Day</option>
+                    <option value="2d">2 Days</option>
+                    <option value="3d">3 Days</option>
+                    <option value="1w">1 Week</option>
+                    <option value="2w">2 Weeks</option>
+                    <option value="1m">1 Month</option>
+                  <% } else { %>
+                    <option class="text-danger" selected disabled>Login for custom expiry options</option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary w-50 py-2 fw-medium">Update URL</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Links -->
+  <div class="text-center mt-4">
+    <a href="/api/yourLinks" class="btn btn-outline-secondary px-4 py-2 fw-medium">Back to Your Links</a>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .container {
+    max-width: 900px; /* Slightly wider container */
+  }
+  .card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  .form-label {
+    color: #1a2b3c;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .form-control, .form-select {
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #d1d8e0;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  }
+  .form-control:disabled {
+    background-color: #f1f3f5;
+    opacity: 0.85;
+  }
+  .form-select:disabled {
+    background-color: #f1f3f5;
+    color: #6c757d;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #0056b3, #0096cc);
+    transform: scale(1.03);
+  }
+  .btn-outline-secondary {
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-color: #6c757d;
+    transition: all 0.3s ease;
+  }
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+    border-color: #6c757d;
+    transform: scale(1.03);
+  }
+  .mb-4 {
+    margin-bottom: 1.5rem !important;
+  }
+  .text-muted {
+    font-size: 0.85rem;
+  }
+  h1 {
+    font-size: 2.5rem;
+    color: #1a2b3c;
+    letter-spacing: -0.5px;
+  }
+  h3 {
+    font-size: 1.5rem;
+    color: #1a2b3c;
+  }
+  @media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h3 { font-size: 1.25rem; }
+    .form-control, .form-select, .btn { font-size: 0.9rem; }
+    .card { padding: 1.5rem; }
+    .col-md-6 { margin-bottom: 1rem; } /* Stack on mobile */
+    .btn-primary { width: 100% !important; }
+  }
+</style>

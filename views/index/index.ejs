@@ -1,49 +1,195 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="container mt-5">
+<!-- Hero Section with Form -->
+<section class="hero-section">
+  <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow p-4">
-                <h2 class="text-center mb-4">URL Shortener</h2>
-                <form action="/api/shortUrl" method="POST">
-                    <!-- Original URL -->
-                    <div class="mb-3">
-                        <label for="longUrl" class="form-label">Enter URL to Shorten</label>
-                        <input type="url" class="form-control" id="longUrl" name="url[originalUrl]" required>
-                    </div>
-                
-                    <!-- Custom Domain (Optional) -->
-                    <div class="mb-3">
-                        <label for="customDomain" class="form-label">Custom Domain (Optional)</label>
-                        <input type="text" class="form-control" id="customDomain" name="url[customDomain]">
-                    </div>
-                
-                    <!-- Expiration Date -->
-                    <div class="mb-3">
-                        <label for="expiry" class="form-label">Expiry</label>
-                        <select class="form-select" id="expiry" name="url[expirationDate]">
-                            <option value="">No Expiry</option>
-                            <option value="1d">1 Day</option>
-                            <option value="2d">2 Days</option>
-                            <option value="3d">3 Days</option>
-                            <option value="1w">1 Week</option>
-                            <option value="2w">2 Weeks</option>
-                            <option value="1m">1 Month</option>
-                        </select>
-                    </div>
-                
-                    <!-- QR Code Option -->
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="generateQR" name="url[generateQR]" value="true">
-                        <label class="form-check-label" for="generateQR">Generate QR Code</label>
-                    </div>
-                
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Shorten URL</button>
-                    </div>
-                </form>
-                
+      <div class="col-md-8">
+        <div class="card shadow p-4">
+          <h2 class="text-center mb-4">Shorten Your URLs with Ease</h2>
+          <p class="text-center text-muted mb-4">Create short, shareable links in seconds!</p>
+          
+          <form action="/api/shortUrl" method="POST">
+            <!-- Original URL -->
+            <div class="mb-3">
+              <label for="longUrl" class="form-label">Enter URL to Shorten</label>
+              <input type="url" class="form-control" id="longUrl" name="url[originalUrl]" required placeholder="https://example.com">
             </div>
+
+            <!-- Custom Domain (Optional) -->
+            <div class="mb-3">
+              <label for="customDomain" class="form-label">Custom Domain (Optional)</label>
+              <input type="text" class="form-control" id="customDomain" name="url[customDomain]" placeholder='"mybrand.com"  Only this form is acceptable.'>
+            </div>
+
+            <!-- Expiration Date -->
+            <div class="mb-3">
+              <label for="expiry" class="form-label">Expiry</label>
+              <select class="form-select" id="expiry" name="url[expirationDate]" <%= user ? "" : "disabled" %>>
+                <% if (user && user.isLoggedIn) { %>
+                  <option value="">No Expiry</option>
+                  <option value="1d">1 Day</option>
+                  <option value="2d">2 Days</option>
+                  <option value="3d">3 Days</option>
+                  <option value="1w">1 Week</option>
+                  <option value="2w">2 Weeks</option>
+                  <option value="1m">1 Month</option>
+                <% } else { %>
+                  <option class="text-danger" selected disabled>Login for custom expiry date</option>
+                <% } %>
+              </select>
+            </div>
+
+            <!-- QR Code Option -->
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="generateQR" name="url[generateQR]" value="true">
+              <label class="form-check-label" for="generateQR">Generate QR Code</label>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Why Use Our URL Shortener?</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 shadow-sm">
+          <i class="fas fa-link fa-2x mb-3 text-primary"></i>
+          <h3>Fast & Simple</h3>
+          <p>Shorten URLs instantly with a single click.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 shadow-sm">
+          <i class="fas fa-chart-line fa-2x mb-3 text-primary"></i>
+          <h3>Track Performance</h3>
+          <p>Get detailed analytics on your shortened links.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 shadow-sm">
+          <i class="fas fa-qrcode fa-2x mb-3 text-primary"></i>
+          <h3>QR Code Support</h3>
+          <p>Generate QR codes for easy sharing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews-section py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5">What Our Users Say</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="review-card p-4 bg-white shadow-sm">
+          <p class="fst-italic">"This tool saved me so much time! The QR code feature is a bonus."</p>
+          <p class="fw-bold text-primary mt-3">- Alex P.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="review-card p-4 bg-white shadow-sm">
+          <p class="fst-italic">"Love the analytics dashboard. It helps me track my campaigns."</p>
+          <p class="fw-bold text-primary mt-3">- Jamie L.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="review-card p-4 bg-white shadow-sm">
+          <p class="fst-italic">"Super easy to use, even for a beginner like me!"</p>
+          <p class="fw-bold text-primary mt-3">- Sam K.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call-to-Action Section -->
+<section class="cta-section py-5 text-center text-white" style="background: linear-gradient(90deg, #007bff, #00c6ff);">
+  <div class="container">
+    <h2 class="mb-4">Ready to Shorten Your Links?</h2>
+    <p class="mb-4">Sign up now to unlock premium features like custom domains and advanced analytics!</p>
+    <a href="/signup" class="btn btn-light btn-lg">Get Started</a>
+  </div>
+</section>
+
+<!-- Custom Styles -->
+<style>
+  .hero-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  }
+  .hero-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a2b3c;
+  }
+  .hero-section .card {
+    border-radius: 15px;
+    background: #fff;
+    border: none;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    border: none;
+    padding: 12px 30px;
+    transition: transform 0.3s ease;
+  }
+  .btn-primary:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0056b3, #0096cc);
+  }
+  .features-section h2, .reviews-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a2b3c;
+  }
+  .feature-card {
+    border-radius: 15px;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .review-card {
+    border-radius: 15px;
+    border: none;
+  }
+  .cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  .btn-light {
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-light:hover {
+    background: #f8f9fa;
+    transform: scale(1.05);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .hero-section h2, .features-section h2, .reviews-section h2, .cta-section h2 {
+      font-size: 2rem;
+    }
+    .hero-section { padding: 40px 0; }
+    .feature-card, .review-card { margin-bottom: 20px; }
+  }
+</style>

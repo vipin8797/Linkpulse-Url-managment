@@ -1,0 +1,4 @@
+[2025-03-22T11:56:32.721Z] WARN: wrong route | Route: GET /api/shortUrl/hello
+[2025-03-22T11:57:12.023Z] WARN: wrong route | Route: GET /api/shortUrl/hello
+[2025-03-22T11:57:33.972Z] ERROR: 🚨 ERROR: path is not defined | Status: 500 | Route: POST /api/shortUrl | IP: ::ffff:127.0.0.1
+[2025-03-22T11:57:34.155Z] WARN: wrong route | Route: GET /favicon.ico
