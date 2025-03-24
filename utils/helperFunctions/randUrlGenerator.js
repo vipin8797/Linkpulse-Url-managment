@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 // Generate Unique Short URL
-module.exports.generateUniqueShortUrl = function (customDomain) {
+function generateUniqueShortUrl(customDomain) {
     const domain = parseDomain(customDomain); // ✅ Normalize domain
 
     if (!domain) return "https://LinkPulse.com"; // Invalid domain
@@ -11,28 +11,6 @@ module.exports.generateUniqueShortUrl = function (customDomain) {
     return `https://${domain}/${shortId}`;
 };
 
-// // ✅ Parse & Normalize Domain
-// function parseDomain(input) {
-//     if (!input) return null;
-
-//     // ✅ Remove "http://" or "https://" if present
-//     let domain = input.replace(/^https?:\/\//, "").trim();
-
-//     // ✅ Remove any trailing "/" if present
-//     domain = domain.replace(/\/$/, "");
-
-//     // ✅ Remove any extra whitespaces within the domain
-//     domain = domain.replace(/\s+/g, "");
-
-//     // ✅ Validate Correct Domain Format
-//     return isValidDomain(domain) ? domain : null;
-// }
-
-
-// // ✅ Validate domain format
-// function isValidDomain(domain) {
-//     return /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
-// }
 
 
 function parseDomain(url) {
@@ -97,3 +75,7 @@ function generateNanoId() {
     const randomPart = crypto.randomBytes(3).toString('base64url'); // 6-char random
     return timestamp + randomPart;
 }
+
+
+
+module.exports = generateUniqueShortUrl;

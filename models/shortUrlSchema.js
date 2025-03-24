@@ -24,21 +24,24 @@ const shortUrlSchema = new mongoose.Schema({
 });
 
 
-// // 🔥 Middleware to delete analytics data when a Short URL is deleted
-// shortUrlSchema.post("findOneAndDelete", async function (doc) {
-//     if (doc) {
-//         await Analytics.deleteMany({ shortUrlId: doc._id });
-//         // console.log(`Analytics data for ShortUrl ID ${doc._id} deleted.`);
-//     }
-// });
 
-// // ✅ Expired URLs ko automatically inactive karne ke liye middleware
-// shortUrlSchema.pre("save", function (next) {
-//     if (this.expirationDate && this.expirationDate < new Date()) {
-//         this.isActive = false; // 🔥 Agar expiry date cross ho gayi toh URL inactive ho jayega
-//     }
-//     next();
-// });
+
+// Pre-find middleware to check expiration
+shortUrlSchema.pre('findOne', async function(next) {
+    const query = this.getQuery(); // Get the query (e.g., { shortUrl: 'abc123' })
+    const now = new Date();
+  
+    // Find the document
+    const shortUrlDoc = await this.model.findOne(query);
+  
+    if (shortUrlDoc && shortUrlDoc.expirationDate && shortUrlDoc.expirationDate < now && shortUrlDoc.isActive) {
+      // If expired and still active, deactivate it
+      shortUrlDoc.isActive = false;
+      await shortUrlDoc.save();
+    }
+  
+    next();
+  });
 
 const ShortUrl = mongoose.model("ShortUrl", shortUrlSchema);
 module.exports = ShortUrl;

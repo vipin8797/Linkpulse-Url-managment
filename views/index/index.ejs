@@ -6,8 +6,8 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card shadow p-4">
-          <h2 class="text-center mb-4">Shorten Your URLs with Ease</h2>
-          <p class="text-center text-muted mb-4">Create short, shareable links in seconds!</p>
+          <h1 class="text-center mb-4">LinkPulse: Best Free URL Shortener Tool</h1>
+          <p class="text-center text-muted mb-4">Transform long URLs into short, shareable links instantly!</p>
           
           <form action="/api/shortUrl" method="POST">
             <!-- Original URL -->
@@ -47,7 +47,7 @@
             </div>
 
             <div class="text-center">
-              <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
+              <button type="submit" class="btn btn-primary btn-lg">Shorten Your URL Now</button>
             </div>
           </form>
         </div>
@@ -59,27 +59,28 @@
 <!-- Features Section -->
 <section class="features-section py-5">
   <div class="container">
-    <h2 class="text-center mb-5">Why Use Our URL Shortener?</h2>
+    <h1 class="text-center mb-5">Why Choose LinkPulse URL Shortener?</h1>
+    <p class="text-center text-muted mb-5">Discover the best free features for shortening your URLs with LinkPulse.</p>
     <div class="row">
       <div class="col-md-4 mb-4">
         <div class="feature-card text-center p-4 shadow-sm">
           <i class="fas fa-link fa-2x mb-3 text-primary"></i>
-          <h3>Fast & Simple</h3>
-          <p>Shorten URLs instantly with a single click.</p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="feature-card text-center p-4 shadow-sm">
-          <i class="fas fa-chart-line fa-2x mb-3 text-primary"></i>
-          <h3>Track Performance</h3>
-          <p>Get detailed analytics on your shortened links.</p>
+          <h2>Fast & Free URL Shortening</h2>
+          <p>Shorten your URLs instantly with LinkPulse—completely free, no hidden costs.</p>
         </div>
       </div>
       <div class="col-md-4 mb-4">
         <div class="feature-card text-center p-4 shadow-sm">
           <i class="fas fa-qrcode fa-2x mb-3 text-primary"></i>
-          <h3>QR Code Support</h3>
-          <p>Generate QR codes for easy sharing.</p>
+          <h2>Custom Domains & QR Codes</h2>
+          <p>Create branded short links with custom domains and generate free QR codes for easy sharing.</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 shadow-sm">
+          <i class="fas fa-chart-line fa-2x mb-3 text-primary"></i>
+          <h2>Track Your Links with Analytics</h2>
+          <p>Monitor performance with free analytics—see clicks and insights on your shortened URLs.</p>
         </div>
       </div>
     </div>
@@ -87,51 +88,46 @@
 </section>
 
 <!-- Reviews Section -->
-<section class="reviews-section py-5 bg-light">
+<!-- Report URL Section -->
+<section class="report-section py-5 bg-light">
   <div class="container">
-    <h2 class="text-center mb-5">What Our Users Say</h2>
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="review-card p-4 bg-white shadow-sm">
-          <p class="fst-italic">"This tool saved me so much time! The QR code feature is a bonus."</p>
-          <p class="fw-bold text-primary mt-3">- Alex P.</p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="review-card p-4 bg-white shadow-sm">
-          <p class="fst-italic">"Love the analytics dashboard. It helps me track my campaigns."</p>
-          <p class="fw-bold text-primary mt-3">- Jamie L.</p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="review-card p-4 bg-white shadow-sm">
-          <p class="fst-italic">"Super easy to use, even for a beginner like me!"</p>
-          <p class="fw-bold text-primary mt-3">- Sam K.</p>
-        </div>
+    <h2 class="text-center mb-4">Report a Problem URL</h2>
+    <p class="text-center text-muted mb-4">Found a suspicious shortened URL? Help us keep <strong>LinkPulse</strong> safe!</p>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form action="/api/report" method="POST" class="shadow p-4 bg-white rounded">
+          <div class="mb-3">
+            <label for="reportUrl" class="form-label">Enter the Short URL</label>
+            <input type="url" class="form-control" id="reportUrl" name="reportUrl" placeholder="e.g., https://linkpulse.com/abc123" required>
+          </div>
+          <div class="mb-3">
+            <label for="reason" class="form-label">Reason for Reporting</label>
+            <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Describe the issue (e.g., spam, malware)" required></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Report URL</button>
+          </div>
+        </form>
       </div>
     </div>
+    <p class="text-center mt-4">Learn more about our free <strong>URL shortener</strong> on our <a href="/about">About page</a>.</p>
   </div>
 </section>
 
-<!-- Call-to-Action Section -->
-<section class="cta-section py-5 text-center text-white" style="background: linear-gradient(90deg, #007bff, #00c6ff);">
-  <div class="container">
-    <h2 class="mb-4">Ready to Shorten Your Links?</h2>
-    <p class="mb-4">Sign up now to unlock premium features like custom domains and advanced analytics!</p>
-    <a href="/signup" class="btn btn-light btn-lg">Get Started</a>
-  </div>
-</section>
-
-<!-- Custom Styles -->
 <style>
+  /* Hero Section */
   .hero-section {
     padding: 60px 0;
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   }
-  .hero-section h2 {
+  .hero-section h1 {
     font-size: 2.5rem;
     font-weight: 700;
     color: #1a2b3c;
+  }
+  .hero-section p {
+    font-size: 1.2rem;
+    color: #6c757d;
   }
   .hero-section .card {
     border-radius: 15px;
@@ -142,16 +138,26 @@
     background: linear-gradient(90deg, #007bff, #00c6ff);
     border: none;
     padding: 12px 30px;
+    font-size: 1.2rem;
     transition: transform 0.3s ease;
   }
   .btn-primary:hover {
     transform: scale(1.05);
     background: linear-gradient(90deg, #0056b3, #0096cc);
   }
-  .features-section h2, .reviews-section h2 {
+
+  /* Features Section */
+  .features-section {
+    padding: 60px 0;
+  }
+  .features-section h1 {
     font-size: 2.5rem;
     font-weight: 700;
     color: #1a2b3c;
+  }
+  .features-section p {
+    font-size: 1.2rem;
+    color: #6c757d;
   }
   .feature-card {
     border-radius: 15px;
@@ -162,20 +168,61 @@
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
-  .feature-card h3 {
+  .feature-card h2 {
     font-size: 1.5rem;
     font-weight: 600;
+    color: #1a2b3c;
+  }
+  .feature-card p {
+    font-size: 1rem;
+    color: #6c757d;
+  }
+  .feature-card i {
+    font-size: 2.5rem; /* Slightly larger icons */
+  }
+
+  /* Reviews Section */
+  .reviews-section {
+    padding: 60px 0;
+    background: #f8f9fa;
+  }
+  .reviews-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a2b3c;
+  }
+  .reviews-section p {
+    font-size: 1.2rem;
+    color: #6c757d;
   }
   .review-card {
     border-radius: 15px;
+    background: #fff;
     border: none;
   }
-  .cta-section h2 {
+  .review-card p {
+    font-size: 1rem;
+    color: #6c757d;
+  }
+  .review-card .fw-bold {
+    font-size: 1.1rem;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 60px 0;
+    background: linear-gradient(90deg, #007bff, #ff007b); /* Bolder gradient */
+  }
+  .cta-section h1 {
     font-size: 2.5rem;
     font-weight: 700;
   }
+  .cta-section p {
+    font-size: 1.2rem;
+  }
   .btn-light {
     padding: 12px 30px;
+    font-size: 1.2rem;
     font-weight: 600;
     transition: all 0.3s ease;
   }
@@ -186,10 +233,18 @@
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
-    .hero-section h2, .features-section h2, .reviews-section h2, .cta-section h2 {
+    .hero-section h1, .features-section h1, .reviews-section h1, .cta-section h1 {
       font-size: 2rem;
     }
+    .hero-section p, .features-section p, .reviews-section p, .cta-section p {
+      font-size: 1rem;
+    }
     .hero-section { padding: 40px 0; }
+    .features-section { padding: 40px 0; }
+    .reviews-section { padding: 40px 0; }
+    .cta-section { padding: 40px 0; }
     .feature-card, .review-card { margin-bottom: 20px; }
+    .btn-primary, .btn-light { font-size: 1rem; padding: 10px 25px; }
+    .feature-card i { font-size: 2rem; }
   }
 </style>

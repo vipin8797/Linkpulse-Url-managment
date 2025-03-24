@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /api/shortUrl
+Allow: /about
+Allow: /contact
+Disallow: /api/yourLinks
+Disallow: /api/yourLinks/
+Disallow: /api/analytics/
+Disallow: /api/summaryAnalytics/
+Sitemap: https://yourdomain.com/sitemap.xml
