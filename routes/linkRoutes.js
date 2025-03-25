@@ -58,13 +58,14 @@ router.put("/yourLinks/:id/qr",
 router.delete("/yourLinks/:id",wrapAsync(deleteQr));
 
 
+//get for Summary Analytics
+router.get("/summaryAnalytics",
+    wrapAsync(getSummaryasync));
+
+
 //get analytics for single link route
 router.get("/analytics/:id",wrapAsync(getAnalyticsasync));
 
-
-//get for Summary Analytics
-router.get("/summaryAnalytics/:id",isLoggedIn,
-    wrapAsync(getSummaryasync));
 
 
 

@@ -8,13 +8,14 @@
 const logger = require('./middlewares/logger');
 
 const express = require('express');
-
+setupCronJobs = require('./cronJobs'); //cron job
 const path = require('path');
 engine = require('ejs-mate')
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ExpressError = require('./utils/ExpressError');
 const wrapAsync = require('./utils/wrapAsync');
+const flash = require('connect-flash'); // connect flash 
 
 const {ShortUrl,User,
     Summary,Analytics,} = require('./models/index');
@@ -31,6 +32,19 @@ const linksRoutes = require('./routes/linkRoutes');
 
 // Using Dependencies
 const app = express();
+// Setup cron jobs BEFORE error handler
+setupCronJobs(app);
+
+// Listen for app-level errors (e.g., from cron)
+app.on('error', (err) => {
+  logger.error(
+    `🚨 CRON ERROR: ${err.message} | Status: ${err.status || 500}`,
+    { stack: err.stack }
+  );
+  console.log('Cron error caught by app listener:', err);
+  // Note: No res here, so can't send response
+});
+
 app.engine('ejs', engine);
 app.set('view engine', 'ejs'); 
 
@@ -68,7 +82,9 @@ app.use(session({
         httpOnly: true,       // Can't be accessed via JavaScript (prevents XSS attacks)
     },
 }));
-         
+// Connect-flash setup
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
             
@@ -138,7 +154,10 @@ async function main() {
 
 //global middleware 
 app.use((req, res, next) => {
-    
+  //flash messages.
+  res.locals.success_msg = req.flash('success'); // Success messages
+  res.locals.error_msg = req.flash('error');  
+
     res.locals.user = req.user 
     ? { 
         ...req.user._doc || req.user, 
@@ -298,12 +317,15 @@ app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
     const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
 
     if (!shortUrl) {
-      return next(new ExpressError(404, "❌ URL Not Found "));
+      //return next(new ExpressError(404, "❌ URL Not Found "));
+      req.flash('error', message="URL you are Searching For is not found!");
+      res.render('index/404.ejs',{message});  
     } 
     if (!shortUrl.isActive) {
       return next(new ExpressError(404, "❌ URL Not  Expired"));
   }
-  
+    //updating lastAccessed of shorturl
+    shortUrl.lastAccessedAt = Date.now();
     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
     res.redirect(shortUrl.originalUrl);
 });
@@ -315,11 +337,12 @@ app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
 
 
 //if upper path does not matches
-app.all('/*',(req,res,next)=>{
+app.all("*",(req,res,next)=>{
     // next(new ExpressError(404,req.path))
     logger.warn(`wrong route | Route: ${req.method} ${req.originalUrl}`);
-
-    // console.log("wrong route: ",req.path," ",req.method);
+    req.flash('error', message="Page Not Found! ");
+    res.render("index/404.ejs",{message});
+   //  console.log("wrong route: ",req.path," ",req.method);
 })
 
 
@@ -327,18 +350,37 @@ app.all('/*',(req,res,next)=>{
 
 
 // Default Error Handling Middleware
+// app.use((err, req, res, next) => {
+//     const { status = 500, message = "Something went wrong" } = err;
+//     logger.error(
+//         `🚨 ERROR: ${err.message} | Status: ${err.status || 500} | Route: ${req.method} ${req.originalUrl} | IP: ${req.ip}`,
+//         { stack: err.stack }
+//       );
+//     console.log(err);
+//     // res.send("Default error handler bhai..",err.message);
+//     // res.redirect('/api/shortUrl');
+// });
+
 app.use((err, req, res, next) => {
-    const { status = 500, message = "Something went wrong" } = err;
+  const { status = 500, message = "Something went wrong" } = err;
+  if (req) {
+    // Errors from routes
     logger.error(
-        `🚨 ERROR: ${err.message} | Status: ${err.status || 500} | Route: ${req.method} ${req.originalUrl} | IP: ${req.ip}`,
-        { stack: err.stack }
-      );
-    // console.log(err);
-    // res.send("Default error handler bhai..",err.message);
-    // res.redirect('/api/shortUrl');
+      `🚨 ERROR: ${err.message} | Status: ${status} | Route: ${req.method} ${req.originalUrl} | IP: ${req.ip}`,
+      { stack: err.stack }
+    );
+    res.status(status).json({ error: message });
+  } else {
+    // Errors from cron or other sources
+    logger.error(
+      `🚨 ERROR: ${err.message} | Status: ${status} | Source: Cron Job`,
+      { stack: err.stack }
+    );
+    //console.log('Cron error processed by default handler:', err);
+  }
+  // req.flash('error', message=err.message);
+ 
 });
-
-
 
 //********************************************************* */
 // Start Server

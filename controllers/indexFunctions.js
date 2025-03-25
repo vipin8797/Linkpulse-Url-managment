@@ -168,36 +168,98 @@ async function postIndexFunction (req ,res,next){
 
 
 //get function for all links
-async function getAllLinks (req, res) {
-    // console.log("got the req");
+// async function getAllLinks (req, res) {
+//     // console.log("got the req");
+//     const sessionId = req.sessionID;
+//     const user = req.user ? req.user._id : null;
+    
+//     let allUrls = null; // Declare only once
+
+//     if (user) {
+//         allUrls = await ShortUrl.find({ userId : user }); // findById se find() use kiya kyunki multiple links ho sakte hain
+//     } else {
+//         allUrls = await ShortUrl.find({ sessionId: sessionId });
+//     }
+//    console.log(allUrls);
+//    allUrls.map((shortedUrl)=>{
+//        if(shortedUrl){
+//         shortedUrl.expirationDate == 
+//        }
+//    })
+//     // res.render('index/allLinks.ejs', { allUrls ,path});
+//     // res.render('index/allLinks', {
+//     //     // 🔥 Pehle se jo important data tha, usko maintain kiya
+//     //     allUrls, 
+//     //     path, 
+    
+//     //     // ✅ Meta Info
+//     //     title: 'LinkPulse - All Links',
+//     //     description: 'View all your shortened URLs - LinkPulse',
+//     //     keywords: 'LinkPulse, all links, link management',
+//     //     url: 'http://localhost:8080/api/yourLinks',
+//     //     image: '/icons/icon2.png',
+    
+//     //  }
+//     // );
+    
+// }    
+async function getAllLinks(req, res) {
+
+
     const sessionId = req.sessionID;
     const user = req.user ? req.user._id : null;
+    const now = new Date();
+    const limit = 20; // Fixed limit of 20 links
+    const page = parseInt(req.query.page) || 1; // Pagination support
+    const skip = (page - 1) * limit;
+  
     
-    let allUrls = null; // Declare only once
-
-    if (user) {
-        allUrls = await ShortUrl.find({ userId : user }); // findById se find() use kiya kyunki multiple links ho sakte hain
-    } else {
-        allUrls = await ShortUrl.find({ sessionId: sessionId });
-    }
-//   console.log(allUrls);
-    // res.render('index/allLinks.ejs', { allUrls ,path});
-    res.render('index/allLinks', {
-        // 🔥 Pehle se jo important data tha, usko maintain kiya
-        allUrls, 
-        path, 
-    
-        // ✅ Meta Info
+      // Base query with limit, skip, and sort
+      const query = user 
+        ? { userId: user }
+        : { sessionId: sessionId };
+  
+      // Fetch links with optimization
+      const allUrls = await ShortUrl.find(query)
+        .limit(limit)
+        .skip(skip)
+        .sort({ createdAt: -1 }) // Newest first
+        .lean(); // Plain JS objects - faster, less memory
+  
+      // Check and update expired links efficiently
+      const expiredIds = allUrls
+        .filter(link => link.expirationDate && link.expirationDate < now && link.isActive)
+        .map(link => link._id);
+  
+      if (expiredIds.length > 0) {
+        await ShortUrl.updateMany(
+          { _id: { $in: expiredIds } },
+          { $set: { isActive: false } }
+        );
+      }
+  
+      // Filter active links for rendering
+      const activeLinks = allUrls.filter(link => link.isActive);
+  
+      // Optional: Log memory usage for monitoring
+      // console.log('Memory:', process.memoryUsage().rss / 1024 / 1024, 'MB');
+  
+      // Render response
+      res.render('index/allLinks', {
+        allUrls: activeLinks,
+        path,
         title: 'LinkPulse - All Links',
-        description: 'View all your shortened URLs - LinkPulse',
+        description: 'View your shortened URLs with LinkPulse',
         keywords: 'LinkPulse, all links, link management',
-        url: 'http://localhost:8080/api/yourLinks',
+        url: 'http://localhost:8080/api/yourLinks', // Update to domain later
         image: '/icons/icon2.png',
-    
-     });
-    
-}    
-
+        currentPage: page,
+        hasMore: activeLinks.length === limit // For "Load More" UI
+      });
+  
+  }
+  
+ 
 
 
 //get edit function for a link
@@ -205,6 +267,9 @@ async function getEditLink(req,res){
     // console.log("gettin edit req.");
     const {id} = req.params;
     const shortedUrl = await ShortUrl.findById(id);
+    if(!shortedUrl){
+        return next(new ExpressError(404, "shorted url not found."))
+    }
     // console.log(shortedUrl);
     // res.render('index/edit.ejs',{shortedUrl});
     res.render('index/edit', {
@@ -275,7 +340,7 @@ async function putEditLink (req, res, next)  {
        }, { new: true });
        
        // console.log(updatedShortUrl);
-       if (!updatedShortUrl) return next(new ExpressError(404, "Short URL not found"));
+       if (!updatedShortUrl)  next(new ExpressError(404, "Shorted URL not found"));
        
       res.redirect("/api/yourLinks");
   
@@ -303,65 +368,130 @@ async function getEditQr(req,res){
 
 
  //put edit qr code
-async function putEditQr(req, res) {
+// async function putEditQr(req, res) {
  
-        // console.log("✅ Multer File Path:", req.file?.path);
-        // console.log("✅ Multer Destination:", req.file?.destination);
-        // console.log("✅ Multer Filename:", req.file?.filename);
+//         // console.log("✅ Multer File Path:", req.file?.path);
+//         // console.log("✅ Multer Destination:", req.file?.destination);
+//         // console.log("✅ Multer Filename:", req.file?.filename);
 
-        const shortedUrl = await ShortUrl.findById(req.params.id);
-        if (!shortedUrl) {
-            return next(new ExpressError(404,"Link not found"))
-        }
+//         const shortedUrl = await ShortUrl.findById(req.params.id);
+//         if (!shortedUrl) {
+//             return next(new ExpressError(404,"Link not found"))
+//         }
             
 
-        if (!req.file || req.file.size === 0) {
-            // console.log("❌ No valid QR image uploaded");
-            return next(new ExpressError(404,"No QR image uploaded or file is empty"));
-        }
+//         if (!req.file || req.file.size === 0) {
+//             // console.log("❌ No valid QR image uploaded");
+//             return next(new ExpressError(404,"No QR image uploaded or file is empty"));
+//         }
            
 
-        // ✅ Fix: Define newQrPath correctly
-        let newQrPath = path.join(req.file.destination, req.file.filename);
-        // console.log("🆕 Expected New QR Path:", newQrPath);
+//         // ✅ Fix: Define newQrPath correctly
+//         let newQrPath = path.join(req.file.destination, req.file.filename);
+//         // console.log("🆕 Expected New QR Path:", newQrPath);
 
-        if (!fs.existsSync(newQrPath)) {
-            // console.error("❌ New QR code file not found after upload!");
-            // console.log("📂 Folder Contents:", fs.readdirSync(req.file.destination));
-            return next(new ExpressError(404,"Failed to save new QR code"));
-        }
+//         if (!fs.existsSync(newQrPath)) {
+//             // console.error("❌ New QR code file not found after upload!");
+//             // console.log("📂 Folder Contents:", fs.readdirSync(req.file.destination));
+//             return next(new ExpressError(404,"Failed to save new QR code"));
+//         }
            
             
 
-        shortedUrl.qrCode = newQrPath;
-        await shortedUrl.save();
-       //  console.log("✅ Updated qrCode to:", newQrPath);
+//         shortedUrl.qrCode = newQrPath;
+//         await shortedUrl.save();
+//        //  console.log("✅ Updated qrCode to:", newQrPath);
 
-        res.redirect(`/api/yourLinks/${req.params.id}?t=${Date.now()}`);
+//         res.redirect(`/api/yourLinks/${req.params.id}?t=${Date.now()}`);
     
-}
-
+// }
+async function putEditQr(req, res, next) {
+    
+      const shortedUrl = await ShortUrl.findById(req.params.id);
+      if (!shortedUrl) {
+        return next(new ExpressError(404, "Link not found"));
+      }
+  
+      if (!req.file || req.file.size === 0) {
+        return next(new ExpressError(404, "No QR image uploaded or file is empty"));
+      }
+  
+      // Define new QR code path
+      const newQrPath = path.join(req.file.destination, req.file.filename);
+  
+      if (!fs.existsSync(newQrPath)) {
+        return next(new ExpressError(404, "Failed to save new QR code"));
+      }
+  
+      // Delete old QR code file if it exists
+      const oldQrPath = shortedUrl.qrCode; // Previous QR code path
+      if (oldQrPath && fs.existsSync(oldQrPath)) {
+        try {
+          fs.unlinkSync(oldQrPath); // Delete the old file
+         // console.log(`Deleted old QR code: ${oldQrPath}`); // Optional log
+          logger.info(`Deleted old QR code: ${oldQrPath}`)
+           
+        } catch (deleteErr) {
+          //console.error(`Failed to delete old QR code: ${deleteErr.message}`);
+          // Don't throw error—continue with new QR save
+          logger.warn(`Failed to delete old QR code: ${deleteErr.message}`);
+        }
+      }
+  
+      // Update with new QR code path
+      shortedUrl.qrCode = newQrPath;
+      await shortedUrl.save();
+  
+      res.redirect(`/api/yourLinks/${req.params.id}?t=${Date.now()}`);
+    
+    }
+  
 
 
 //delete shorted Link
-async function deleteQr(req,res){
-    const { id } = req.params;
-    const deletedUrl = await ShortUrl.findByIdAndDelete(id);
+// async function deleteQr(req,res){
+//     const { id } = req.params;
+//     const deletedUrl = await ShortUrl.findByIdAndDelete(id);
     
-    if (!deletedUrl) {
-        return next(new ExpressError(404, "Short URL not found"));
-    }
+//     if (!deletedUrl) {
+//         return next(new ExpressError(404, "Short URL not found"));
+//     }
         
       
 
-  res.redirect('/api/yourLinks'); // ✅ Redirect back to URLs page
-}
-
+//   res.redirect('/api/yourLinks'); // ✅ Redirect back to URLs page
+// }
+async function deleteQr(req, res, next) {
+    
+      const { id } = req.params;
+      const deletedUrl = await ShortUrl.findByIdAndDelete(id);
+  
+      if (!deletedUrl) {
+         next(new ExpressError(404, "Shorted URL not found"));
+      }
+  
+      // Delete associated QR code file if it exists
+      const qrCodePath = deletedUrl.qrCode;
+      if (qrCodePath && fs.existsSync(qrCodePath)) {
+        try {
+          fs.unlinkSync(qrCodePath); // Synchronously delete the QR file
+          
+          logger.info(`Deleted QR code file: ${qrCodePath}`)
+        } catch (deleteErr) {
+            //console.error(`Failed to delete QR code file: ${deleteErr.message}`);
+            logger.warn(`Failed to delete QR code file: ${deleteErr.message}`)
+          // Continue even if file deletion fails—DB deletion is priority
+        }
+      }
+  
+      res.redirect('/api/yourLinks');
+   
+  }
 
 
 //get analytics for single link
 async function getAnalyticsasync (req, res)  {
-    // console.log("Getting request for analytics");
+     //console.log("Getting request for  single analytics");
         const { id } = req.params;
     
         
@@ -377,6 +507,7 @@ async function getAnalyticsasync (req, res)  {
 
 //Summary Analytics
 async function getSummaryasync(req,res){
+    //  console.log("getting summary get req..");
     const userId = req.user._id; // Assuming user is authenticated
     await updateUserSummary(userId); // Update before rendering
      const summaryData = await Summary.findOne({ userId });

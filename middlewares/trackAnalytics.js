@@ -1,6 +1,6 @@
 
 
-
+const ExpressError = require('../utils/ExpressError');
 const ShortUrl = require("../models/shortUrlSchema");
 const Analytics = require("../models/analyticsSchema");
 const useragent = require("useragent"); //browser and device
@@ -16,8 +16,10 @@ const trackAnalytics = async (req, res, next) => {
         const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
         
         if (!shortUrl) {
-            return res.status(404).send("Short URL not found");
+          return next(new ExpressError(404,"Shorted URL not found"))
+            
         }
+            
         
         // 🔥 Step 2: Extract User-Agent Data
         const agent = useragent.parse(req.get("User-Agent"));
@@ -73,8 +75,9 @@ const trackAnalytics = async (req, res, next) => {
 
         next(); // ✅ Move to the next middleware or controller
     } catch (error) {
-        console.error("Analytics Tracking Error:", error);
-        res.status(500).send("Server Error");
+        // console.error("Analytics Tracking Error:", error);
+        // res.status(500).send("Server Error");
+        return next(new ExpressError(500,error));
     }
 };
 
