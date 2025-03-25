@@ -44,9 +44,9 @@
           <!-- Link Details -->
           <div class="col-md-4">
             <div class="info-box p-3 bg-white rounded shadow-sm">
-              <h5 class="fw-medium mb-2">Details</h5>
+              <h5 class="fw-medium mb-2 text-dark">Details</h5>
               <p class="small mb-1">
-                <strong>Created:</strong>
+                <strong class="text-dark">Created:</strong>
                 <% if (newShortUrl.createdAt && newShortUrl.createdAt.$date && newShortUrl.createdAt.$date.$numberLong) { %>
                   <%= new Date(parseInt(newShortUrl.createdAt.$date.$numberLong)).toLocaleString() %>
                 <% } else if (newShortUrl.createdAt) { %>
@@ -56,7 +56,7 @@
                 <% } %>
               </p>
               <p class="small mb-0">
-                <strong>Expires:</strong>
+                <strong class="text-dark">Expires:</strong>
                 <% if (newShortUrl.expirationDate && newShortUrl.expirationDate.$date && newShortUrl.expirationDate.$date.$numberLong) { %>
                   <%= new Date(parseInt(newShortUrl.expirationDate.$date.$numberLong)).toLocaleString() %>
                 <% } else if (newShortUrl.expirationDate) { %>
@@ -91,38 +91,40 @@
   </div>
 </div>
 
-<!-- Custom Styles -->
+<!-- Custom Styles with Improved Colors -->
 <style>
   .card {
-    background-color: #f8f9fa;
+    background-color: #ffffff; /* White card background for contrast */
+    border: 1px solid #e0e0e0; /* Light border for definition */
   }
   .link-box {
-    border: 1px solid #e9ecef;
+    border: 1px solid #d1d8e0; /* Slightly darker border */
+    background-color: #f9fafb; /* Light gray for subtle contrast */
     transition: box-shadow 0.3s;
   }
   .link-box:hover {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   .short-url {
     font-size: 1.2rem;
-    color: #007bff;
+    color: #1e90ff; /* Bright blue for visibility */
     text-decoration: none;
     word-break: break-all;
     transition: color 0.3s;
   }
   .short-url:hover {
-    color: #0056b3;
+    color: #1565c0; /* Darker blue on hover */
     text-decoration: underline;
   }
   .original-url {
     font-size: 0.9rem;
-    color: #6c757d;
+    color: #37474f; /* Darker gray for readability */
     text-decoration: none;
     max-width: 100%;
     transition: color 0.3s;
   }
   .original-url:hover {
-    color: #495057;
+    color: #263238; /* Even darker gray on hover */
     text-decoration: underline;
   }
   .qr-box {
@@ -130,9 +132,9 @@
     height: 150px;
     margin: 0 auto;
     padding: 5px;
-    background-color: #fff;
+    background-color: #ffffff; /* White background for QR */
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
   }
   .qr-box:hover {
@@ -143,46 +145,66 @@
     border-radius: 5px;
   }
   .info-box {
-    border: 1px solid #e9ecef;
+    border: 1px solid #d1d8e0; /* Consistent border */
+    background-color: #f9fafb; /* Light gray background */
+  }
+  /* Labels in info-box */
+  .info-box .small {
+    color: #455a64; /* Darker gray for text */
   }
   .btn-primary {
-    background-color: #007bff;
+    background-color: #0288d1; /* Vibrant blue */
     border: none;
     font-size: 0.9rem;
+    color: #ffffff; /* White text for contrast */
     transition: background-color 0.3s;
   }
   .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #0277bd; /* Slightly darker blue */
   }
   .btn-secondary {
-    background-color: #6c757d;
+    background-color: #546e7a; /* Muted teal */
     border: none;
     font-size: 0.9rem;
+    color: #ffffff; /* White text */
     transition: background-color 0.3s;
   }
   .btn-secondary:hover {
-    background-color: #5a6268;
+    background-color: #455a64; /* Darker teal */
   }
   .btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
+    border-color: #0288d1; /* Match primary button */
+    color: #0288d1; /* Blue text */
     font-size: 0.9rem;
+    background-color: transparent;
+    transition: all 0.3s;
   }
   .btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #0288d1;
+    color: #ffffff; /* White text on hover */
   }
   .btn-outline-success {
-    border-color: #28a745;
-    color: #28a745;
+    border-color: #2e7d32; /* Darker green */
+    color: #2e7d32; /* Green text */
     font-size: 0.9rem;
+    background-color: transparent;
+    transition: all 0.3s;
   }
   .btn-outline-success:hover {
-    background-color: #28a745;
-    color: #fff;
+    background-color: #2e7d32;
+    color: #ffffff; /* White text on hover */
+  }
+  .btn-success {
+    background-color: #2e7d32; /* Green when copied */
+    border: none;
+    color: #ffffff;
   }
   .small {
     font-size: 0.85rem;
+    color: #455a64; /* Darker gray for visibility */
+  }
+  .text-muted {
+    color: #78909c !important; /* Lighter muted tone */
   }
   @media (max-width: 768px) {
     .short-url {

@@ -1,106 +1,198 @@
 <style>
   /* General styles for the footer */
   footer {
-    background-color: #333; /* Dark background for the footer */
-    color: #fff; /* White text color */
-    padding: 20px 0; /* Padding for top and bottom */
-    font-size: 14px; /* Font size */
-    margin-top: auto; /* Push footer to the bottom */
+    background-color: #1a2b3c; /* Dark blue-gray */
+    color: #f8f9fa; /* Off-white */
+    padding: 40px 0; /* Increased padding for better spacing */
+    font-size: 15px; /* Readable base size */
+    margin-top: auto; /* Sticky footer */
   }
 
   /* Container for footer content */
   .footer-content {
     display: flex;
-    justify-content: space-between; /* Space between left and right sections */
-    align-items: center; /* Vertically center align items */
-    max-width: 1200px; /* Maximum width of the footer */
-    margin: 0 auto; /* Center the footer horizontally */
-    padding: 0 20px; /* Padding on the sides */
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px; /* Slightly more padding on sides */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px; /* Space between sections if wrapped */
   }
 
   /* Left section of the footer */
   .footer-left {
     display: flex;
-    gap: 10px; /* Space between items */
-    align-items: center; /* Vertically center align items */
+    flex-wrap: wrap; /* Wrap items on small screens */
+    gap: 15px; /* Consistent spacing */
+    align-items: center;
+  }
+  .footer-left a, .footer-left span {
+    color: #f8f9fa;
+    transition: color 0.3s ease;
+  }
+  .footer-left a:hover {
+    color: #00c6ff; /* Bright cyan hover */
   }
 
   /* Right section of the footer */
   .footer-right {
     display: flex;
-    gap: 20px; /* Space between items */
-    align-items: center; /* Vertically center align items */
+    flex-wrap: wrap; /* Wrap items on small screens */
+    gap: 25px; /* Better spacing */
+    align-items: center;
   }
 
   /* Social icons styling */
   .social-icons {
     display: flex;
-    gap: 10px; /* Space between icons */
+    gap: 15px; /* Space between icons */
   }
-
   .social-icons a {
-    color: #fff; /* White color for icons */
-    font-size: 18px; /* Icon size */
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
+    color: #f8f9fa;
+    font-size: 22px; /* Slightly larger for visibility */
+    transition: color 0.3s ease, transform 0.3s ease;
   }
-
   .social-icons a:hover {
-    color: #0073e6; /* Change color on hover */
+    color: #00c6ff;
+    transform: scale(1.15); /* Slightly bigger zoom for better hover effect */
   }
 
   /* Links styling */
   footer a {
-    color: #fff; /* White color for links */
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
+    color: #f8f9fa;
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
-
   footer a:hover {
-    color: #0073e6; /* Change color on hover */
+    color: #00c6ff;
   }
 
-  /* Ensure the footer sticks to the bottom of the page */
-  html,
-  body {
-    height: 100%; /* Full height for the HTML and body */
-    margin: 0; /* Remove default margin */
+  /* Keyword-rich section */
+  .footer-links {
+    margin-top: 20px; /* More space above */
+    text-align: center;
+    font-size: 14px;
+    color: #b0bec5; /* Lighter gray */
+    padding: 10px 0; /* Padding for separation */
+  }
+  .footer-links a {
+    color: #f8f9fa;
+    margin: 0 12px; /* Increased spacing between links */
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover {
+    color: #00c6ff;
   }
 
+  /* Sticky footer setup */
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
   body {
     display: flex;
-    flex-direction: column; /* Stack content vertically */
+    flex-direction: column;
+  }
+  main {
+    flex: 1;
   }
 
-  main {
-    flex: 1; /* Allow main content to grow and push footer down */
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    footer {
+      padding: 30px 0; /* Reduced padding for mobile */
+    }
+    .footer-content {
+      flex-direction: column; /* Stack vertically */
+      text-align: center;
+      gap: 25px; /* More gap for clarity */
+    }
+    .footer-left, .footer-right {
+      justify-content: center; /* Center items */
+      gap: 12px; /* Tighter spacing on mobile */
+    }
+    .footer-left {
+      padding-bottom: 15px; /* Space between left and right */
+    }
+    .social-icons {
+      gap: 20px; /* More space for touch targets */
+    }
+    .social-icons a {
+      font-size: 20px; /* Slightly smaller but still clickable */
+    }
+    .footer-links {
+      margin-top: 15px;
+      padding: 0 15px; /* Padding for edge alignment */
+      font-size: 13px; /* Slightly smaller for mobile */
+    }
+    .footer-links a {
+      margin: 0 8px; /* Adjusted spacing */
+      display: inline-block; /* Better wrapping */
+    }
+  }
+
+  @media (max-width: 480px) {
+    footer {
+      padding: 25px 0; /* Even less padding for small screens */
+    }
+    .footer-content {
+      gap: 20px;
+    }
+    .footer-left, .footer-right {
+      gap: 10px;
+    }
+    .social-icons a {
+      font-size: 18px; /* Smaller for very small screens */
+    }
+    .footer-links {
+      font-size: 12px; /* Compact text */
+      line-height: 1.5; /* Improved readability */
+    }
+    .footer-links a {
+      margin: 0 6px;
+    }
   }
 </style>
 
 <footer>
   <div class="footer-content">
+    
     <div class="footer-left">
-      <span>© 2025 Url-Shortner, Inc.</span>
+      <span>© 2025 LinkPulse, Inc.</span>
       <span>·</span>
-      <span>Privacy</span>
+      <a href="/api/features">Features</a>
       <span>·</span>
-      <span>Terms</span>
+      <a href="/api/privacy">Privacy</a>
       <span>·</span>
-      <span>Sitemap</span>
+      <a href="/api/terms">Terms</a>
+      <span>·</span>
+      <a href="/api/sitemap.xml">Sitemap</a>
+      <span>·</span>
+      <a href="/api/blog">Blog</a>
+      <span>·</span>
+      <a href="/api/about">About</a>
+      <span>·</span>
+      <a href="/api/contact">Contact</a>
     </div>
+
     <div class="footer-right">
       <a href="#">English (AU)</a>
       <span>$ AUD</span>
-      <div class="social-icons">
-        <a href="https://www.instagram.com/"
-          ><i class="fa-brands fa-instagram"></i
-        ></a>
-        <a href="https://www.twiiter.com/"
-          ><i class="fa-brands fa-twitter"></i
-        ></a>
-        <a href="https://www.facebook.com/"
-          ><i class="fa-brands fa-facebook"></i
-        ></a>
-      </div>
+      <!-- <div class="social-icons">
+        <a href="https://www.instagram.com/" aria-label="Follow LinkPulse on Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.twitter.com/" aria-label="Follow LinkPulse on Twitter">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+        <a href="https://www.facebook.com/" aria-label="Follow LinkPulse on Facebook">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+      </div> -->
     </div>
+  </div>
+  <div class="footer-links">
+    <p>Explore <a href="/api/shortUrl">LinkPulse URL Shortener</a> - Free URL shortening with  </p>
   </div>
 </footer>

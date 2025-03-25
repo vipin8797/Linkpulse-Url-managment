@@ -1,0 +1,26 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container error-container">
+  <!-- <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+    <circle cx="400" cy="300" r="200" fill="none" stroke="rgba(0, 212, 180, 0.2)" stroke-width="3" />
+    <circle id="planet" cx="400" cy="300" r="50" fill="var(--green)" opacity="0.3" />
+    <circle cx="400" cy="300" r="150" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="2" />
+  </svg> -->
+
+  <div class="error-content">
+    <h1>404</h1>
+    <h2 class="error">
+      <% if (message) { %>
+        <%= message %>
+      <% } else if (error_msg && error_msg.length > 0) { %>
+        <%= error_msg[0] %>
+      <% } else { %>
+        Oops! Page Not Found
+      <% } %>
+    </h2>
+    <p>Looks like you've wandered into the unknown. Don't worry, let's get you back to shortening your links!</p>
+    <a href="/api/shortUrl" class="btn"><button>Back to Home</button></a>
+  </div>
+</div>
+
+<script src="/js/404.js"></script>

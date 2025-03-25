@@ -43,4 +43,7 @@ const summarySchema = new mongoose.Schema({
   ipSummary: [{ ip: String, count: { type: Number, default: 0 } }]
 });
 
-module.exports = mongoose.model('Summary', summarySchema);
+const Summary = mongoose.model('Summary', summarySchema);
+module.exports = Summary;
+
+

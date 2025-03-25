@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const fs = require("fs");
+const path = require("path");
 
 // const shortUrlSchema = new mongoose.Schema({
 //     originalUrl: { type: String, required: true },
@@ -20,25 +22,50 @@ const shortUrlSchema = new mongoose.Schema({
     sessionId: { type: String, default: null, index: true }, // ✅ Indexed for faster lookups
     createdAt: { type: Date, default: Date.now },
     expirationDate: { type: Date, default: null }, 
-    isActive: { type: Boolean, default: true } 
+    isActive: { type: Boolean, default: true } ,
+    lastAccessedAt: { type: Date, default: Date.now, index: true }
 });
 
 
-// // 🔥 Middleware to delete analytics data when a Short URL is deleted
-// shortUrlSchema.post("findOneAndDelete", async function (doc) {
-//     if (doc) {
-//         await Analytics.deleteMany({ shortUrlId: doc._id });
-//         // console.log(`Analytics data for ShortUrl ID ${doc._id} deleted.`);
-//     }
-// });
 
-// // ✅ Expired URLs ko automatically inactive karne ke liye middleware
-// shortUrlSchema.pre("save", function (next) {
-//     if (this.expirationDate && this.expirationDate < new Date()) {
-//         this.isActive = false; // 🔥 Agar expiry date cross ho gayi toh URL inactive ho jayega
+
+// // Pre-find middleware to check expiration
+// shortUrlSchema.pre('findOne', async function(next) {
+//     const query = this.getQuery(); // Get the query (e.g., { shortUrl: 'abc123' })
+//     const now = new Date();
+  
+//     // Find the document
+//     const shortUrlDoc = await this.model.findOne(query);
+  
+//     if (shortUrlDoc && shortUrlDoc.expirationDate && shortUrlDoc.expirationDate < now && shortUrlDoc.isActive) {
+//       // If expired and still active, deactivate it
+//       shortUrlDoc.isActive = false;
+//       await shortUrlDoc.save();
 //     }
+  
 //     next();
+//   });
+
+
+
+
+ 
+// shortUrlSchema.post(["find", "findOne"], function (docs) {
+//     if (!Array.isArray(docs)) docs = [docs]; // findOne ke liye array wrap
+    
+//     docs.forEach(async (doc) => {
+//         if (doc.qrCode) {
+//             const qrPath = path.join(__dirname, "..", "uploads", path.basename(doc.qrCode)); // ✅ Correct path
+
+//             if (!fs.existsSync(qrPath)) {
+//               //  console.log(`❌ File not found, setting QR code to empty: ${doc.qrCode}`);
+//                 doc.qrCode = ""; // ✅ Empty string assign kar raha hai
+//                 await doc.save(); // ✅ Document update ho jayega
+//             }
+//         }
+//     });
 // });
 
+shortUrlSchema.index({ userId: 1 });
 const ShortUrl = mongoose.model("ShortUrl", shortUrlSchema);
 module.exports = ShortUrl;
