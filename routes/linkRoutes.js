@@ -59,7 +59,7 @@ router.delete("/yourLinks/:id",wrapAsync(deleteQr));
 
 
 //get for Summary Analytics
-router.get("/summaryAnalytics",
+router.get("/summaryAnalytics",isLoggedIn,
     wrapAsync(getSummaryasync));
 
 
