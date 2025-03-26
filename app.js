@@ -309,13 +309,14 @@ app.get("/logout", (req, res) => {
 
 // //Redirect Route****************************
 app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
+    console.log("🔹 Incoming Request:", req.params);
     
     let { domain, shortCode } = req.params;
 
     // 🔍 Find the Short URL in MongoDB
     const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
-
+  console.log(shortUrl);
+  
     if (!shortUrl) {
       //return next(new ExpressError(404, "❌ URL Not Found "));
       req.flash('error', message="URL you are Searching For is not found!");
