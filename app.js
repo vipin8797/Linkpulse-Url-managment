@@ -330,16 +330,15 @@ app.get("/logout", (req, res) => {
 //     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
 //     res.redirect(shortUrl.originalUrl);
 // });
-
-app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
+app.get("/:subdomain/:shortCode", trackAnalytics, async (req, res, next) => {
     console.log("🔹 Incoming Request:", req.params);
 
-    let { shortCode } = req.params;
-    let domain = req.headers.host; // Yeh actual domain lega, chahe subdomain ho ya na ho
+    let { subdomain, shortCode } = req.params;
+    let fullDomain = `${subdomain}.linkpulse.fun`;  // Always attaching .linkpulse.fun
 
     // 🔍 Find the Short URL in MongoDB
     const shortUrl = await ShortUrl.findOne({ 
-        shortUrl: `https://${domain}/${shortCode}` 
+        shortUrl: `https://${fullDomain}/${shortCode}` 
     });
 
     console.log(shortUrl);
@@ -360,6 +359,11 @@ app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
     console.log("✅ Redirecting to:", shortUrl.originalUrl);
     res.redirect(shortUrl.originalUrl);
 });
+
+
+
+
+
 
 
 
