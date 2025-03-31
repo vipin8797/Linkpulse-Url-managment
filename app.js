@@ -314,7 +314,7 @@ app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
     let { domain, shortCode } = req.params;
 
     // 🔍 Find the Short URL in MongoDB
-    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
+    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}.${process.env.DOMAIN}/${shortCode}` });
   console.log(shortUrl);
   
     if (!shortUrl) {
