@@ -325,29 +325,29 @@ app.get("/logout", (req, res) => {
 
 
 // //Redirect Route****************************
-app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
-//     console.log("🔹 Incoming Request:", req.params);
- console.log("getting requ for shorted url upper") ;
+// app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
+// //     console.log("🔹 Incoming Request:", req.params);
+//  console.log("getting requ for shorted url upper") ;
     
-//     let { domain, shortCode } = req.params;
+// //     let { domain, shortCode } = req.params;
 
-//     // 🔍 Find the Short URL in MongoDB
-//     const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}.${process.env.DOMAIN}/${shortCode}` });
-//   console.log(shortUrl);
+// //     // 🔍 Find the Short URL in MongoDB
+// //     const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}.${process.env.DOMAIN}/${shortCode}` });
+// //   console.log(shortUrl);
   
-//     if (!shortUrl) {
-//       //return next(new ExpressError(404, "❌ URL Not Found "));
-//       req.flash('error', message="URL you are Searching For is not found!");
-//       res.render('index/404.ejs',{message});  
-//     } 
-//     if (!shortUrl.isActive) {
-//       return next(new ExpressError(404, "❌ URL Not  Expired"));
-//   }
-//     //updating lastAccessed of shorturl
-//     shortUrl.lastAccessedAt = Date.now();
-//     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
-//     res.redirect(shortUrl.originalUrl);
- });
+// //     if (!shortUrl) {
+// //       //return next(new ExpressError(404, "❌ URL Not Found "));
+// //       req.flash('error', message="URL you are Searching For is not found!");
+// //       res.render('index/404.ejs',{message});  
+// //     } 
+// //     if (!shortUrl.isActive) {
+// //       return next(new ExpressError(404, "❌ URL Not  Expired"));
+// //   }
+// //     //updating lastAccessed of shorturl
+// //     shortUrl.lastAccessedAt = Date.now();
+// //     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
+// //     res.redirect(shortUrl.originalUrl);
+//  });
 
 app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
     // console.log("🔹 Incoming Request:", req.params);
@@ -355,11 +355,11 @@ app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
    
   
 });
-app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from second");
+// app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
+//     // console.log("🔹 Incoming Request:", req.params);
+//  console.log("got from second");
    
-});
+// });
   
 
 // app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
