@@ -157,16 +157,26 @@ app.use((req, res, next) => {
   //flash messages.
  console.log("getting reqy",req.path);
 
-// Extract full domain (example: mynewvideo.linkpulse.fun)
-    let fullDomain = req.hostname;  
-    console.log("Full Domain:", fullDomain);
+// // Extract full domain (example: mynewvideo.linkpulse.fun)
+//     let fullDomain = req.hostname;  
+//     console.log("Full Domain:", fullDomain);
     
-    // Ensure the domain ends with `.linkpulse.fun`
+//     // Ensure the domain ends with `.linkpulse.fun`
+//     if (fullDomain.endsWith('.linkpulse.fun')) {
+//         let subdomain = fullDomain.split('.')[0];  // Get the subdomain part
+//         req.subdomain = subdomain;  // Store subdomain for later use
+//         console.log("Subdomain:", subdomain);
+//     }
+let fullDomain = req.hostname;  // "mynewvideo.linkpulse.fun"
     if (fullDomain.endsWith('.linkpulse.fun')) {
-        let subdomain = fullDomain.split('.')[0];  // Get the subdomain part
-        req.subdomain = subdomain;  // Store subdomain for later use
-        console.log("Subdomain:", subdomain);
+        let subdomain = fullDomain.split('.')[0];  // Extract subdomain part
+        req.subdomain = subdomain;  // Store it in the request object for later use
+    } else {
+        return res.status(400).send("Invalid domain");
     }
+
+
+ 
  
   res.locals.success_msg = req.flash('success'); // Success messages
   res.locals.error_msg = req.flash('error');  
