@@ -156,6 +156,18 @@ async function main() {
 app.use((req, res, next) => {
   //flash messages.
  console.log("getting reqy",req.path);
+
+// Extract full domain (example: mynewvideo.linkpulse.fun)
+    let fullDomain = req.hostname;  
+    console.log("Full Domain:", fullDomain);
+    
+    // Ensure the domain ends with `.linkpulse.fun`
+    if (fullDomain.endsWith('.linkpulse.fun')) {
+        let subdomain = fullDomain.split('.')[0];  // Get the subdomain part
+        req.subdomain = subdomain;  // Store subdomain for later use
+        console.log("Subdomain:", subdomain);
+    }
+ 
   res.locals.success_msg = req.flash('success'); // Success messages
   res.locals.error_msg = req.flash('error');  
 
@@ -350,11 +362,11 @@ app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
 });
   
 
-app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from third");
+// app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
+//     // console.log("🔹 Incoming Request:", req.params);
+//  console.log("got from third");
    
-});
+// });
 
 
 
@@ -371,6 +383,7 @@ app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, n
 //if upper path does not matches
 app.all("*",(req,res,next)=>{
     // next(new ExpressError(404,req.path))
+ console.log("all case");
     logger.warn(`wrong route | Route: ${req.method} ${req.originalUrl}`);
     req.flash('error', message="Page Not Found! ");
     res.render("index/404.ejs",{message});
