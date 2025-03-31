@@ -330,7 +330,7 @@ app.get("/logout", (req, res) => {
 //     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
 //     res.redirect(shortUrl.originalUrl);
 // });
-app.get("/:subdomain/:shortCode", trackAnalytics, async (req, res, next) => {
+app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
     // console.log("🔹 Incoming Request:", req.params);
    console.log("getting requ for shorted url");
     // let { subdomain, shortCode } = req.params;
