@@ -155,7 +155,7 @@ async function main() {
 //global middleware 
 app.use((req, res, next) => {
   //flash messages.
- cosole.log("getting reqy");
+ console.log("getting reqy");
   res.locals.success_msg = req.flash('success'); // Success messages
   res.locals.error_msg = req.flash('error');  
 
