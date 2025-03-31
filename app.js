@@ -167,13 +167,7 @@ app.use((req, res, next) => {
 //         req.subdomain = subdomain;  // Store subdomain for later use
 //         console.log("Subdomain:", subdomain);
 //     }
-let fullDomain = req.hostname;  // "mynewvideo.linkpulse.fun"
-    if (fullDomain.endsWith('.linkpulse.fun')) {
-        let subdomain = fullDomain.split('.')[0];  // Extract subdomain part
-        req.subdomain = subdomain;  // Store it in the request object for later use
-    } else {
-        return res.status(400).send("Invalid domain");
-    }
+
 
 
  
@@ -199,6 +193,24 @@ let fullDomain = req.hostname;  // "mynewvideo.linkpulse.fun"
  });
 
 
+
+
+
+app.use((req, res, next) => {
+    // Get the full domain (e.g., "mynewvideo.linkpulse.fun")
+    let fullDomain = req.hostname; 
+
+    // Check if the domain ends with .linkpulse.fun (assuming this is your main domain)
+    if (fullDomain.endsWith('.linkpulse.fun')) {
+        // Extract the subdomain (e.g., "mynewvideo")
+        let subdomain = fullDomain.split('.')[0];
+        req.subdomain = subdomain;  // Store it in req.subdomain
+    } else {
+        return res.status(400).send("Invalid domain");
+    }
+
+    next();  // Pass the request to the next middleware
+});
 
 
 
