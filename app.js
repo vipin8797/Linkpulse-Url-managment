@@ -308,28 +308,59 @@ app.get("/logout", (req, res) => {
 
 
 // //Redirect Route****************************
-app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
-    console.log("🔹 Incoming Request:", req.params);
+// app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
+//     console.log("🔹 Incoming Request:", req.params);
     
-    let { domain, shortCode } = req.params;
+//     let { domain, shortCode } = req.params;
+
+//     // 🔍 Find the Short URL in MongoDB
+//     const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}.${process.env.DOMAIN}/${shortCode}` });
+//   console.log(shortUrl);
+  
+//     if (!shortUrl) {
+//       //return next(new ExpressError(404, "❌ URL Not Found "));
+//       req.flash('error', message="URL you are Searching For is not found!");
+//       res.render('index/404.ejs',{message});  
+//     } 
+//     if (!shortUrl.isActive) {
+//       return next(new ExpressError(404, "❌ URL Not  Expired"));
+//   }
+//     //updating lastAccessed of shorturl
+//     shortUrl.lastAccessedAt = Date.now();
+//     // console.log("✅ Redirecting to:", shortUrl.originalUrl);
+//     res.redirect(shortUrl.originalUrl);
+// });
+
+app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
+    console.log("🔹 Incoming Request:", req.params);
+
+    let { shortCode } = req.params;
+    let domain = req.headers.host; // Yeh actual domain lega, chahe subdomain ho ya na ho
 
     // 🔍 Find the Short URL in MongoDB
-    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}.${process.env.DOMAIN}/${shortCode}` });
-  console.log(shortUrl);
-  
+    const shortUrl = await ShortUrl.findOne({ 
+        shortUrl: `https://${domain}/${shortCode}` 
+    });
+
+    console.log(shortUrl);
+
     if (!shortUrl) {
-      //return next(new ExpressError(404, "❌ URL Not Found "));
-      req.flash('error', message="URL you are Searching For is not found!");
-      res.render('index/404.ejs',{message});  
-    } 
+        req.flash('error', message = "URL you are Searching For is not found!");
+        return res.render('index/404.ejs', { message });
+    }
+
     if (!shortUrl.isActive) {
-      return next(new ExpressError(404, "❌ URL Not  Expired"));
-  }
-    //updating lastAccessed of shorturl
+        return next(new ExpressError(404, "❌ URL Expired"));
+    }
+
+    // Updating lastAccessed of shortUrl
     shortUrl.lastAccessedAt = Date.now();
-    // console.log("✅ Redirecting to:", shortUrl.originalUrl);
+    await shortUrl.save(); // Save update in DB
+
+    console.log("✅ Redirecting to:", shortUrl.originalUrl);
     res.redirect(shortUrl.originalUrl);
 });
+
 
 
 
