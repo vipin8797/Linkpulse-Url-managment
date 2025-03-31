@@ -1,4 +1,0 @@
-[2025-03-31T09:00:41.456Z] ERROR: Joi Validation failed for Short URL creation
-[2025-03-31T09:00:41.460Z] ERROR: 🚨 ERROR: Joi Validation failed: url.customDomain: Custom domain must be a valid domain name (e.g., example.com) | Status: 400 | Route: POST /api/shortUrl | IP: ::1
-[2025-03-31T09:01:12.593Z] ERROR: Joi Validation failed for Short URL creation
-[2025-03-31T09:01:12.595Z] ERROR: 🚨 ERROR: Joi Validation failed: url.customDomain: Custom domain must be a valid domain name (e.g., example.com) | Status: 400 | Route: POST /api/shortUrl | IP: ::1
