@@ -1,0 +1,17 @@
+[Mon Mar 31 2025 14:22:35 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[Mon Mar 31 2025 14:27:02 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[2025-03-31T08:57:03.974Z] INFO: Server started on port 8080
+[Mon Mar 31 2025 14:30:11 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[2025-03-31T09:00:13.233Z] INFO: Server started on port 8080
+[2025-03-31T09:00:41.456Z] ERROR: Joi Validation failed for Short URL creation
+[2025-03-31T09:00:41.460Z] ERROR: 🚨 ERROR: Joi Validation failed: url.customDomain: Custom domain must be a valid domain name (e.g., example.com) | Status: 400 | Route: POST /api/shortUrl | IP: ::1
+[2025-03-31T09:00:41.659Z] WARN: wrong route | Route: GET /favicon.ico
+[2025-03-31T09:01:12.593Z] ERROR: Joi Validation failed for Short URL creation
+[2025-03-31T09:01:12.595Z] ERROR: 🚨 ERROR: Joi Validation failed: url.customDomain: Custom domain must be a valid domain name (e.g., example.com) | Status: 400 | Route: POST /api/shortUrl | IP: ::1
+[2025-03-31T09:01:12.783Z] WARN: wrong route | Route: GET /favicon.ico
+[Mon Mar 31 2025 14:32:51 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[2025-03-31T09:02:53.134Z] INFO: Server started on port 8080
+[Mon Mar 31 2025 14:46:22 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[2025-03-31T09:16:23.878Z] INFO: Server started on port 8080
+[Mon Mar 31 2025 14:46:51 GMT+0530 (India Standard Time)] INFO: Cron jobs setup complete
+[2025-03-31T09:16:53.272Z] INFO: Server started on port 8080

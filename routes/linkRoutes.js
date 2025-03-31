@@ -32,7 +32,8 @@ const {getIndexFunction,postIndexFunction,
 router.get('/shortUrl',getIndexFunction);
 
 //post route for shortUrl
-router.post('/shortUrl',JoiValidateShortUrl1,wrapAsync(postIndexFunction));
+router.post('/shortUrl',
+    wrapAsync(postIndexFunction));
 
 
 //get for All Links
