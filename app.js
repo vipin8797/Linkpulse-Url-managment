@@ -362,11 +362,11 @@ app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
 // });
   
 
-// app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
-//     // console.log("🔹 Incoming Request:", req.params);
-//  console.log("got from third");
+app.get("/:subdomain/linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
+    // console.log("🔹 Incoming Request:", req.params);
+ console.log("got from third");
    
-// });
+});
 
 
 
