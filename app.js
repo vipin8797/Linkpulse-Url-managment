@@ -184,24 +184,6 @@ app.use((req, res, next) => {
 
 
 
-app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from first");
-   
-  
-});
-app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from second");
-   
-});
-  
-
-app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from third");
-   
-});
 
 
 //index get route
@@ -355,6 +337,24 @@ app.get("/:domain/:shortCode",trackAnalytics, async (req, res, next) => {
 //     res.redirect(shortUrl.originalUrl);
  });
 
+app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
+    // console.log("🔹 Incoming Request:", req.params);
+ console.log("got from first");
+   
+  
+});
+app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
+    // console.log("🔹 Incoming Request:", req.params);
+ console.log("got from second");
+   
+});
+  
+
+app.get("/:domain/.linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
+    // console.log("🔹 Incoming Request:", req.params);
+ console.log("got from third");
+   
+});
 
 
 
