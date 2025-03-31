@@ -1,1 +1,3 @@
 node_modules/
+middlewares/logs/combined.log
+middlewares/logs/errors.log
