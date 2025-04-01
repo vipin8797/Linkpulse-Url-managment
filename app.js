@@ -432,7 +432,7 @@ app.use((err, req, res, next) => {
     //console.log('Cron error processed by default handler:', err);
   }
   // req.flash('error', message=err.message);
- 
+ console.log(err);
 });
 
 //********************************************************* */
