@@ -13,7 +13,8 @@ const trackAnalytics = async (req, res, next) => {
         let { domain, shortCode } = req.params;
 
         // 🔥 Step 1: Find the Short URL
-        const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
+        // const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${domain}/${shortCode}` });
+        const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
         
         if (!shortUrl) {
           return next(new ExpressError(404,"Shorted URL not found"))
