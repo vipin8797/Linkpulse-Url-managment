@@ -196,24 +196,24 @@ app.use((req, res, next) => {
 
 
 
-app.use((req, res, next) => {
-    console.log("Full Domain from req.hostname:", req.hostname);
-    let fullDomain = req.hostname; 
+// app.use((req, res, next) => {
+//     console.log("Full Domain from req.hostname:", req.hostname);
+//     let fullDomain = req.hostname; 
 
-    if (fullDomain.includes("localhost")) {
-        console.log("Running on localhost, setting subdomain manually.");
-        req.subdomain = "mynewvideo";  // Local testing case
-    } else if (fullDomain.endsWith('.linkpulse.fun')) {
-        let subdomain = fullDomain.split('.')[0];
-        console.log("Detected Subdomain:", subdomain);
-        req.subdomain = subdomain;
-    } else {
-        console.log("Invalid domain detected:", fullDomain);
-        return res.status(400).send("Invalid domain");
-    }
+//     if (fullDomain.includes("localhost")) {
+//         console.log("Running on localhost, setting subdomain manually.");
+//         req.subdomain = "mynewvideo";  // Local testing case
+//     } else if (fullDomain.endsWith('.linkpulse.fun')) {
+//         let subdomain = fullDomain.split('.')[0];
+//         console.log("Detected Subdomain:", subdomain);
+//         req.subdomain = subdomain;
+//     } else {
+//         console.log("Invalid domain detected:", fullDomain);
+//         return res.status(400).send("Invalid domain");
+//     }
 
-    next();
-});
+//     next();
+// });
 
 
 
