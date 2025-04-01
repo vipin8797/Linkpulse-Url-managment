@@ -209,7 +209,7 @@ app.use((req, res, next) => {
 
 
 
-app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
+app.get("/:shortCode", async (req, res, next) => {
     // console.log("🔹 Incoming Request:", req.params);
  console.log("got from first");
    
