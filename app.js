@@ -181,34 +181,69 @@ app.use((req, res, next) => {
 
 
 
+// 
 // Middleware to extract subdomain
-app.use((req, res, next) => {
-  const fullDomain = req.hostname; // e.g., "mynewvideo.linkpulse.fun" or "localhost"
-  console.log("Full Domain:", fullDomain);
+// app.use((req, res, next) => {
+//   const fullDomain = req.hostname; // e.g., "mynewvideo.linkpulse.fun" or "localhost"
+//   console.log("Full Domain:", fullDomain);
 
-  // Check if it's your domain
-  const baseDomain = process.env.DOMAIN || "linkpulse.fun"; // Use env var for flexibility
+//   // Check if it's your domain
+//   const baseDomain = process.env.DOMAIN || "linkpulse.fun"; // Use env var for flexibility
+//   if (fullDomain.endsWith(baseDomain)) {
+//     const subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0]; // Extract "mynewvideo"
+//     req.subdomain = subdomain || null; // Store subdomain in req
+//     console.log("Extracted Subdomain:", req.subdomain);
+//   } else if (fullDomain.includes("localhost")) {
+//     req.subdomain = "mynewvideo"; // Hardcode for local testing
+//     console.log("Localhost detected, using default subdomain:", req.subdomain);
+//   } else {
+//     req.subdomain = null; // No valid subdomain
+//     console.log("No valid subdomain detected");
+//   }
+//   next();
+// });
+
+
+// Subdomain middleware
+app.use((req, res, next) => {
+  const fullDomain = req.hostname;
+  const baseDomain = "linkpulse.fun";
   if (fullDomain.endsWith(baseDomain)) {
-    const subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0]; // Extract "mynewvideo"
-    req.subdomain = subdomain || null; // Store subdomain in req
-    console.log("Extracted Subdomain:", req.subdomain);
-  } else if (fullDomain.includes("localhost")) {
-    req.subdomain = "mynewvideo"; // Hardcode for local testing
-    console.log("Localhost detected, using default subdomain:", req.subdomain);
-  } else {
-    req.subdomain = null; // No valid subdomain
-    console.log("No valid subdomain detected");
+    req.subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0];
+    console.log("Subdomain:", req.subdomain);
   }
   next();
 });
-
-
-
 
 //ROutes************************************************
 
 
 
+
+//Redirect Route****************************
+app.get("/:shortCode", async (req, res, next) => {
+//     console.log("🔹 Incoming Request:", req.params);
+ console.log("getting requ for shorted url upper") ;
+    
+     let {  shortCode } = req.params;
+
+    // 🔍 Find the Short URL in MongoDB
+    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
+  console.log(shortUrl);
+  
+    if (!shortUrl) {
+      //return next(new ExpressError(404, "❌ URL Not Found "));
+      req.flash('error', message="URL you are Searching For is not found!");
+      res.render('index/404.ejs',{message});  
+    } 
+    if (!shortUrl.isActive) {
+      return next(new ExpressError(404, "❌ URL Not  Expired"));
+  }
+    //updating lastAccessed of shorturl
+    shortUrl.lastAccessedAt = Date.now();
+    // console.log("✅ Redirecting to:", shortUrl.originalUrl);
+    res.redirect(shortUrl.originalUrl);
+ });
 
 
 //index get route
@@ -336,31 +371,6 @@ app.get("/logout", (req, res) => {
     `);
   });
 
-
-//Redirect Route****************************
-app.get("/:shortCode", async (req, res, next) => {
-//     console.log("🔹 Incoming Request:", req.params);
- console.log("getting requ for shorted url upper") ;
-    
-     let {  shortCode } = req.params;
-
-    // 🔍 Find the Short URL in MongoDB
-    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
-  console.log(shortUrl);
-  
-    if (!shortUrl) {
-      //return next(new ExpressError(404, "❌ URL Not Found "));
-      req.flash('error', message="URL you are Searching For is not found!");
-      res.render('index/404.ejs',{message});  
-    } 
-    if (!shortUrl.isActive) {
-      return next(new ExpressError(404, "❌ URL Not  Expired"));
-  }
-    //updating lastAccessed of shorturl
-    shortUrl.lastAccessedAt = Date.now();
-    // console.log("✅ Redirecting to:", shortUrl.originalUrl);
-    res.redirect(shortUrl.originalUrl);
- });
 
 
 
