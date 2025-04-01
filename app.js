@@ -345,7 +345,7 @@ app.get("/:shortCode", async (req, res, next) => {
      let {  shortCode } = req.params;
 
     // 🔍 Find the Short URL in MongoDB
-    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${subdomain}.${process.env.DOMAIN}/${shortCode}` });
+    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
   console.log(shortUrl);
   
 //     if (!shortUrl) {
