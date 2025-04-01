@@ -92,7 +92,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback",
+    callbackURL: "https://linkpulse.fun/auth/google/callback",
     passReqToCallback: true  // ✅ req object ko access karne ke liye
   },
   async (req, accessToken, refreshToken, profile, done) => {
