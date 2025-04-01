@@ -209,7 +209,12 @@ app.use((req, res, next) => {
 
 
 
-
+app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
+    // console.log("🔹 Incoming Request:", req.params);
+ console.log("got from first");
+   
+  
+});
 
 //index get route
 //index post route
@@ -362,12 +367,7 @@ app.get("/logout", (req, res) => {
 // //     res.redirect(shortUrl.originalUrl);
 //  });
 
-app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from first");
-   
-  
-});
+
 // app.get("/:domain/:shortCode", trackAnalytics, async (req, res, next) => {
 //     // console.log("🔹 Incoming Request:", req.params);
 //  console.log("got from second");
