@@ -49,7 +49,7 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs'); 
 
 app.set('views', path.join(__dirname, 'views'));
-// app.set("subdomain offset", 2);//alow subomains.
+app.set("subdomain offset", 2);//alow subomains.
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use( express.static(path.join(__dirname, 'uploads')));
