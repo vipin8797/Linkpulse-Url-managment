@@ -155,23 +155,7 @@ async function main() {
 //global middleware 
 app.use((req, res, next) => {
   //flash messages.
- console.log("getting reqy",req.path);
-
-// // Extract full domain (example: mynewvideo.linkpulse.fun)
-//     let fullDomain = req.hostname;  
-//     console.log("Full Domain:", fullDomain);
-    
-//     // Ensure the domain ends with `.linkpulse.fun`
-//     if (fullDomain.endsWith('.linkpulse.fun')) {
-//         let subdomain = fullDomain.split('.')[0];  // Get the subdomain part
-//         req.subdomain = subdomain;  // Store subdomain for later use
-//         console.log("Subdomain:", subdomain);
-//     }
-
-
-
- 
- 
+ console.log("getting reqy",req.path); 
   res.locals.success_msg = req.flash('success'); // Success messages
   res.locals.error_msg = req.flash('error');  
 
@@ -196,24 +180,27 @@ app.use((req, res, next) => {
 
 
 
-// app.use((req, res, next) => {
-//     console.log("Full Domain from req.hostname:", req.hostname);
-//     let fullDomain = req.hostname; 
 
-//     if (fullDomain.includes("localhost")) {
-//         console.log("Running on localhost, setting subdomain manually.");
-//         req.subdomain = "mynewvideo";  // Local testing case
-//     } else if (fullDomain.endsWith('.linkpulse.fun')) {
-//         let subdomain = fullDomain.split('.')[0];
-//         console.log("Detected Subdomain:", subdomain);
-//         req.subdomain = subdomain;
-//     } else {
-//         console.log("Invalid domain detected:", fullDomain);
-//         return res.status(400).send("Invalid domain");
-//     }
+// Middleware to extract subdomain
+app.use((req, res, next) => {
+  const fullDomain = req.hostname; // e.g., "mynewvideo.linkpulse.fun" or "localhost"
+  console.log("Full Domain:", fullDomain);
 
-//     next();
-// });
+  // Check if it's your domain
+  const baseDomain = process.env.DOMAIN || "linkpulse.fun"; // Use env var for flexibility
+  if (fullDomain.endsWith(baseDomain)) {
+    const subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0]; // Extract "mynewvideo"
+    req.subdomain = subdomain || null; // Store subdomain in req
+    console.log("Extracted Subdomain:", req.subdomain);
+  } else if (fullDomain.includes("localhost")) {
+    req.subdomain = "mynewvideo"; // Hardcode for local testing
+    console.log("Localhost detected, using default subdomain:", req.subdomain);
+  } else {
+    req.subdomain = null; // No valid subdomain
+    console.log("No valid subdomain detected");
+  }
+  next();
+});
 
 
 
@@ -388,11 +375,6 @@ app.get("/:shortCode", trackAnalytics, async (req, res, next) => {
 // });
   
 
-app.get("/:subdomain/linkpulse.fun/:shortCode", trackAnalytics, async (req, res, next) => {
-    // console.log("🔹 Incoming Request:", req.params);
- console.log("got from third");
-   
-});
 
 
 
