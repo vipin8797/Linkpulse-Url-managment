@@ -181,26 +181,26 @@ app.use((req, res, next) => {
 
 
 
-// // Middleware to extract subdomain
-// app.use((req, res, next) => {
-//   const fullDomain = req.hostname; // e.g., "mynewvideo.linkpulse.fun" or "localhost"
-//   console.log("Full Domain:", fullDomain);
+// Middleware to extract subdomain
+app.use((req, res, next) => {
+  const fullDomain = req.hostname; // e.g., "mynewvideo.linkpulse.fun" or "localhost"
+  console.log("Full Domain:", fullDomain);
 
-//   // Check if it's your domain
-//   const baseDomain = process.env.DOMAIN || "linkpulse.fun"; // Use env var for flexibility
-//   if (fullDomain.endsWith(baseDomain)) {
-//     const subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0]; // Extract "mynewvideo"
-//     req.subdomain = subdomain || null; // Store subdomain in req
-//     console.log("Extracted Subdomain:", req.subdomain);
-//   } else if (fullDomain.includes("localhost")) {
-//     req.subdomain = "mynewvideo"; // Hardcode for local testing
-//     console.log("Localhost detected, using default subdomain:", req.subdomain);
-//   } else {
-//     req.subdomain = null; // No valid subdomain
-//     console.log("No valid subdomain detected");
-//   }
-//   next();
-// });
+  // Check if it's your domain
+  const baseDomain = process.env.DOMAIN || "linkpulse.fun"; // Use env var for flexibility
+  if (fullDomain.endsWith(baseDomain)) {
+    const subdomain = fullDomain.replace(`.${baseDomain}`, "").split(".")[0]; // Extract "mynewvideo"
+    req.subdomain = subdomain || null; // Store subdomain in req
+    console.log("Extracted Subdomain:", req.subdomain);
+  } else if (fullDomain.includes("localhost")) {
+    req.subdomain = "mynewvideo"; // Hardcode for local testing
+    console.log("Localhost detected, using default subdomain:", req.subdomain);
+  } else {
+    req.subdomain = null; // No valid subdomain
+    console.log("No valid subdomain detected");
+  }
+  next();
+});
 
 
 
