@@ -220,30 +220,7 @@ app.use((req, res, next) => {
 
 
 
-//Redirect Route****************************
-app.get("/:shortCode", trackAnalytics,async (req, res, next) => {
-//     console.log("🔹 Incoming Request:", req.params);
- console.log("getting requ for shorted url upper") ;
-    
-     let {  shortCode } = req.params;
 
-    // 🔍 Find the Short URL in MongoDB
-    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
-  console.log(shortUrl);
-  
-    if (!shortUrl) {
-      //return next(new ExpressError(404, "❌ URL Not Found "));
-      req.flash('error', message="URL you are Searching For is not found!");
-      res.render('index/404.ejs',{message});  
-    } 
-    if (!shortUrl.isActive) {
-      return next(new ExpressError(404, "❌ URL Not  Expired"));
-  }
-    //updating lastAccessed of shorturl
-    shortUrl.lastAccessedAt = Date.now();
-    // console.log("✅ Redirecting to:", shortUrl.originalUrl);
-    res.redirect(shortUrl.originalUrl);
- });
 
 
 //index get route
@@ -375,7 +352,30 @@ app.get("/logout", (req, res) => {
 
 
 
+//Redirect Route****************************
+app.get("/:shortCode", trackAnalytics,async (req, res, next) => {
+//     console.log("🔹 Incoming Request:", req.params);
+ console.log("getting requ for shorted url upper") ;
+    
+     let {  shortCode } = req.params;
 
+    // 🔍 Find the Short URL in MongoDB
+    const shortUrl = await ShortUrl.findOne({ shortUrl: `https://${req.subdomain}.${process.env.DOMAIN}/${shortCode}` });
+  console.log(shortUrl);
+  
+    if (!shortUrl) {
+      //return next(new ExpressError(404, "❌ URL Not Found "));
+      req.flash('error', message="URL you are Searching For is not found!");
+      res.render('index/404.ejs',{message});  
+    } 
+    if (!shortUrl.isActive) {
+      return next(new ExpressError(404, "❌ URL Not  Expired"));
+  }
+    //updating lastAccessed of shorturl
+    shortUrl.lastAccessedAt = Date.now();
+    // console.log("✅ Redirecting to:", shortUrl.originalUrl);
+    res.redirect(shortUrl.originalUrl);
+ });
 
 
 
