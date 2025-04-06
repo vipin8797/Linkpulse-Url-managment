@@ -154,7 +154,12 @@ async function main() {
 
 //global middleware 
 app.use((req, res, next) => {
-  //flash messages.
+   //for crawling
+  res.setHeader('Access-Control-Allow-Origin', 'https://linkpulse.fun');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+ 
+ //flash messages.
  console.log("getting req at ",req.path); 
   res.locals.success_msg = req.flash('success'); // Success messages
   res.locals.error_msg = req.flash('error');  
