@@ -262,7 +262,7 @@ app.get("/logout", (req, res) => {
 
 
 //Report Route
-  app.post('/api/report', (req, res) => {
+  app.post('/report', (req, res) => {
     const { reportUrl, reason } = req.body;
     // Logic to handle report (e.g., save to database, email admin)
     console.log(`Reported URL: ${reportUrl}, Reason: ${reason}`);
@@ -270,81 +270,81 @@ app.get("/logout", (req, res) => {
   });
 
   //features
-  app.get('/api/features', (req, res) => {
+  app.get('/features', (req, res) => {
     res.render('index/features', {
       title: 'LinkPulse Features - Best Free URL Shortener',
       description: 'Explore all features of LinkPulse, the free URL shortener with custom domains, QR codes, and analytics.',
       keywords: 'URL shortener features, LinkPulse features, free URL shortener',
-      url: 'https://linkpulse.com/features',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/features',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
 
-  app.get('/api/blog', (req, res) => {
+  app.get('/blog', (req, res) => {
     res.render('index/blog.ejs', {
       title: 'LinkPulse Blog - URL Shortener Tips & Updates',
       description: 'Learn how to use a URL shortener with LinkPulse - Tips, tricks, and updates for free link shortening.',
       keywords: 'URL shortener, LinkPulse blog, shorten links, custom URL shortener',
-      url: 'https://linkpulse.com/blog',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/blog',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
 
-  app.get('/api/about', (req, res) => {
+  app.get('/about', (req, res) => {
     res.render('index/about', {
       title: 'About LinkPulse - Free URL Shortener',
       description: 'Learn about LinkPulse, your free URL shortener with custom domains, QR codes, and analytics.',
       keywords: 'about LinkPulse, URL shortener, free URL shortener, link shortening',
-      url: 'https://linkpulse.com/about',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/about',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
  
-  app.get('/api/contact', (req, res) => {
+  app.get('/contact', (req, res) => {
     res.render('index/contact', {
       title: 'Contact LinkPulse - Free URL Shortener Support',
       description: 'Get in touch with LinkPulse for support with our free URL shortener, custom domains, and analytics.',
       keywords: 'contact LinkPulse, URL shortener support, free URL shortener',
-      url: 'https://linkpulse.com/contact',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/contact',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
 
 
   app.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
-    res.render('sitemap', { baseUrl: 'https://linkpulse.com' });
+    res.render('sitemap', { baseUrl: 'https://linkpulse.fun' });
   });
 
 
-  app.get('/api/terms', (req, res) => {
+  app.get('/terms', (req, res) => {
     res.render('index/terms', {
       title: 'LinkPulse Terms of Service - URL Shortener',
       description: 'Read the Terms of Service for LinkPulse, your free URL shortener with custom domains and analytics.',
       keywords: 'URL shortener terms, LinkPulse terms, free URL shortener',
-      url: 'https://linkpulse.com/terms',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/terms',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
   
-  app.get('/api/privacy', (req, res) => {
+  app.get('/privacy', (req, res) => {
     res.render('index/privacy.ejs', {
       title: 'LinkPulse Privacy Policy - URL Shortener',
       description: 'Learn how LinkPulse protects your data with our free URL shortener service.',
       keywords: 'URL shortener privacy, LinkPulse privacy, free URL shortener',
-      url: 'https://linkpulse.com/privacy',
-      image: 'https://linkpulse.com/icons/icon2.png'
+      url: 'https://linkpulse.fun/privacy',
+      image: 'https://linkpulse.fun/icons/icon2.png'
     });
   });
   
-  app.get('/api/robots.txt', (req, res) => {
+  app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
     res.send(`
       User-agent: *
       Disallow: /admin
       Disallow: /private
       Allow: /
-      Sitemap: https://linkpulse.com/sitemap.xml
+      Sitemap: https://linkpulse.fun/sitemap.xml
     `);
   });
 
