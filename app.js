@@ -234,6 +234,19 @@ app.use((req, res, next) => {
  
  
 
+app.get('/shortUrl', (req, res) => {
+  res.render('index/index', {
+    title: 'LinkPulse - URL Shortener',
+    description: 'Shorten your URLs with LinkPulse - Fast, secure, and easy link management with click tracking.',
+    keywords: 'LinkPulse, URL shortener, shorten links, link management, click tracking',
+    url: 'https://linkpulse.fun/shortUrl',
+    image: 'https://linkpulse.fun/icons/icon2.png'
+  });
+});
+
+
+
+
 
 
 
