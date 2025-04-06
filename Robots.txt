@@ -3,4 +3,4 @@ Disallow: /admin  # Block admin routes if any
 Disallow: /private  # Block private user areas if any
 Allow: /
 
-Sitemap: https://linkpulse.com/sitemap.xml
+Sitemap: https://linkpulse.fun/sitemap.xml
