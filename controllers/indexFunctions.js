@@ -34,7 +34,7 @@ async function getIndexFunction (req,res,next){
         title: 'LinkPulse - URL Shortener',
         description: 'Shorten your URLs with LinkPulse - Fast, secure, and easy link management with click tracking.',
         keywords: 'LinkPulse, URL shortener, shorten links, link management, click tracking',
-        url: 'http://localhost:8080/api/shortUrl',
+        url: 'https://linkpulse.fun/shortUrl',
         image: '/icons/icon2.png'
       });
 }
@@ -251,7 +251,7 @@ async function getAllLinks(req, res) {
         title: 'LinkPulse - All Links',
         description: 'View your shortened URLs with LinkPulse',
         keywords: 'LinkPulse, all links, link management',
-        url: 'http://localhost:8080/api/yourLinks', // Update to domain later
+        url: 'https://linkpulse.fun/api/yourLinks', // Update to domain later
         image: '/icons/icon2.png',
         currentPage: page,
         hasMore: activeLinks.length === limit // For "Load More" UI
@@ -280,7 +280,7 @@ async function getEditLink(req,res){
         title: `LinkPulse - Edit ${shortedUrl}`,
         description: `Edit your shortened URL ${shortedUrl} - LinkPulse`,
         keywords: `LinkPulse, edit URL, ${shortedUrl}, link management`,
-        url: `http://localhost:8080/api/yourLinks/${id}`,
+        url: `https://linkpulse.fun/api/yourLinks/${id}`,
         image: '/icons/icon2.png',
     
     
