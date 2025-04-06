@@ -311,7 +311,7 @@ app.get("/logout", (req, res) => {
   });
 
 
-  app.get('/api/sitemap.xml', (req, res) => {
+  app.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
     res.render('sitemap', { baseUrl: 'https://linkpulse.com' });
   });
