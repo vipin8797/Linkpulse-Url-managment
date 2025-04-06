@@ -264,7 +264,7 @@ app.get(
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/api/shortUrl" }),
     (req, res) => {
-      res.redirect('/api/shortUrl'); // Successful login ke baad home page pe redirect
+      res.redirect('/shortUrl'); // Successful login ke baad home page pe redirect
     }
   );
 
@@ -273,7 +273,7 @@ app.get("/logout", (req, res) => {
     req.logout((err) => {
       if (err) return next(err);
     //   res.redirect("/");
-    res.redirect('/api/shortUrl');
+    res.redirect('/shortUrl');
     });
   });
 
@@ -284,7 +284,7 @@ app.get("/logout", (req, res) => {
     const { reportUrl, reason } = req.body;
     // Logic to handle report (e.g., save to database, email admin)
     console.log(`Reported URL: ${reportUrl}, Reason: ${reason}`);
-    res.redirect("/api/shortUrl");
+    res.redirect("/shortUrl");
   });
 
   //features
