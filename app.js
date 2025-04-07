@@ -72,7 +72,7 @@ app.use(session({
     store,
     secret: process.env.SUPER_SECRET_KEY,
     resave: false,            // No need to save session if no change
-    saveUninitialized: true,  // Save session even if it's new (but not modified)
+    saveUninitialized: false,  // Save session even if it's new (but not modified)
     autoRemove: "interval", // Automatically remove expired sessions
     autoRemoveInterval: 10 ,// Remove expired sessions every 10 minutes
     cookie: {
@@ -329,10 +329,36 @@ app.get("/logout", (req, res) => {
   });
 
 
-  app.get('/sitemap.xml', (req, res) => {
-    res.header('Content-Type', 'application/xml');
-    res.render('sitemap', { baseUrl: 'https://linkpulse.fun' });
-  });
+  // app.get('/sitemap.xml', (req, res) => {
+  //   res.header('Content-Type', 'application/xml');
+  //   res.render('sitemap', { baseUrl: 'https://linkpulse.fun' });
+  // });
+
+
+app.get('/sitemap.xml', (req, res) => {
+  res.header('Content-Type', 'application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://linkpulse.fun/shortUrl</loc>
+    <lastmod>2025-04-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://linkpulse.fun/blog</loc>
+    <lastmod>2025-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`);
+});
+
+
+
+
+
+
 
 
   app.get('/terms', (req, res) => {
