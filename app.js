@@ -59,6 +59,30 @@ app.use(cookieParser()) //cookie parser
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //path to serve qr code to ejs
 
+
+app.get('/sitemap.xml', (req, res) => {
+  res.header('Content-Type', 'application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://linkpulse.fun/shortUrl</loc>
+    <lastmod>2025-04-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://linkpulse.fun/blog</loc>
+    <lastmod>2025-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`);
+});
+
+
+
+
+
 //express-sessions.
 const store = MongoStore.create({
     mongoUrl:process.env.MONGODB_URL,
@@ -335,24 +359,7 @@ app.get("/logout", (req, res) => {
   // });
 
 
-app.get('/sitemap.xml', (req, res) => {
-  res.header('Content-Type', 'application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://linkpulse.fun/shortUrl</loc>
-    <lastmod>2025-04-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://linkpulse.fun/blog</loc>
-    <lastmod>2025-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-</urlset>`);
-});
+
 
 
 
